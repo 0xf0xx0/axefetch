@@ -1,0 +1,67 @@
+[general]
+separator = ":"
+underline = "-"
+icon = true
+# default: 'model'
+# values: 'vendor', 'family', 'model', path to ascii art in a plaintext file
+icon_type = "model"
+icon_spacing = 3
+
+[display]
+format = """\
+info title
+info underline
+
+info "Model" model
+info "ASIC(s)" asicmodel
+info "Firmware" firmware
+info "Uptime" uptime
+info "Best Difficulty" bestdiff
+info "Shares" shares
+prin circlejerking into open source
+InFo "invalid line" invalid
+"""
+
+# default: 'board'
+# values: 'vendor', 'family', 'manual'
+colors = "manual"
+
+[colors]
+# only used if display.colors is set to "manual"
+# can be hex, or pick from the usual 16 colors + 'reset'
+title = "green"
+at = "white"
+underline = "blackbright"
+subtitle = "green"
+separator = "blackbright"
+info = "cyan"
+
+[title]
+workername = true
+hostname = true
+
+[model]
+boardversion = true
+vendor = true # todo
+family = true # todo
+
+[asicmodel]
+asiccount = true
+smallcorecount = true # todo, asicCount * smallCoreCount
+
+[bestdiff]
+ath = true
+session = true
+# off: '21M current, 210M best'
+# on:  '21M/210M'
+shortpaw = "off"
+
+[firmware]
+version = true
+
+[shares]
+# off: '200 accepted, 4 rejected'
+# on:  '200, 4'
+shortpaw = "off"
+# appends the accept/reject ratio % to the share string
+ratio = true
