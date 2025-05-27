@@ -25,11 +25,11 @@ go build
 # TODO
 - [ ] clean + optimize code
 - [ ] more info functions
-    these rely on bitaxeorg/ESP-Miner/issues/716
+    - these rely on bitaxeorg/ESP-Miner/issues/716
     - [ ] add vendor to model string ("GekkoScience 601")
     - [ ] model family ("Supra 401")
 - [ ] add icons
-    - add support for no icon
+    - [ ] add support for no icon
     - same as info
 - [ ] add color themes
     - same as info

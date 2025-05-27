@@ -66,7 +66,7 @@ type formatmatch struct {
 }
 // finds format tags by regex, including their target
 func selectFormats(line string) []formatmatch {
-	reg := regexp.MustCompile(`\{.+?\}`)
+	reg := regexp.MustCompile(`\{[#\w\d]+\}`)
 	indexes := reg.FindAllStringIndex(line, -1)
 	ret := make([]formatmatch, len(indexes))
 	for i, element := range indexes {

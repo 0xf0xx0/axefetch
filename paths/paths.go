@@ -11,17 +11,20 @@ var CONFIG_ROOT = getConfigDir()
 var ICON_ROOT = filepath.Join(CONFIG_ROOT, "icons/")
 var ASIC_ROOT = filepath.Join(ICON_ROOT, "asics/")
 var MODEL_ROOT = filepath.Join(ICON_ROOT, "models/")
+var MISC_ROOT = filepath.Join(ICON_ROOT, "misc/")
 var VENDOR_ROOT = filepath.Join(ICON_ROOT, "vendors/")
 var PATHS = []string{
 	CONFIG_ROOT,
 	ICON_ROOT,
 	ASIC_ROOT,
+	MISC_ROOT,
 	MODEL_ROOT,
 	VENDOR_ROOT,
 }
 var ICON_PATHS = []string{
 	ICON_ROOT,
 	ASIC_ROOT,
+	MISC_ROOT,
 	MODEL_ROOT,
 	VENDOR_ROOT,
 }
