@@ -5,20 +5,6 @@ import (
 	"strings"
 )
 
-// searches and loads an icon
-func LoadIcon(nameOrPath string) []string {
-	contents := loadIcon(nameOrPath)
-	if contents == nil {
-		/// look in icon dirs
-		contents = SearchAndLoadIcon(nameOrPath)
-		if contents == nil {
-			/// doesnt exist
-			return nil
-		}
-	}
-	return contents
-}
-
 // loads an icon from a path
 func loadIcon(path string) []string {
 	contents, err := os.ReadFile(path)
@@ -30,14 +16,21 @@ func loadIcon(path string) []string {
 	return strings.Split(strings.Trim(string(contents), "\n"), "\n")
 }
 
-// searches for an icon in the icon dirs and returns it
+// tries to load an icon by path, and if that fails searches for it in the icon dirs
 func SearchAndLoadIcon(name string) []string {
-	for _, m := range append([]map[string][]string{}, Asics, Models, ModelFamilies, Vendors, Misc) {
-		icon, ok := m[name]
-		if !ok {
-			continue
+	icon := loadIcon(name)
+	if icon == nil {
+		/// search
+		/// MAYBE: does merging the maps result in better perf? doubtful
+		/// ordered by most to least used
+		for _, m := range append([]map[string][]string{}, Models, ModelFamilies, Asics, Vendors, Misc) {
+			var ok bool
+			icon, ok = m[name]
+			if !ok {
+				continue
+			}
+			return icon
 		}
-		return icon
 	}
-	return nil
+	return icon
 }

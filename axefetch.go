@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/0xf0xx0/axefetch/colors"
@@ -55,7 +56,7 @@ func main() {
 			&cli.StringFlag{
 				Name:  "conf",
 				Usage: "config file path",
-				Value: "./config.toml",
+				Value: filepath.Join(paths.CONFIG_ROOT, "config.toml"),
 			},
 			&cli.StringFlag{
 				Name:  "ip",
@@ -79,19 +80,39 @@ func main() {
 
 			if !ctx.Bool("testing") {
 				if ip == "" {
-					log.Fatalln("no ip address given")
+					println("no ip address given")
+					os.Exit(1)
 				}
-				req, err := http.Get(fmt.Sprintf("http://%s/api/system/info", ip))
+				infoReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", ip))
 				if err != nil {
-					log.Fatalf("error getting axe info: %s", err)
+					println(fmt.Sprintf("error getting axe info: %s", err))
+					os.Exit(1)
 				}
-				body, err := io.ReadAll(req.Body)
+				body, err := io.ReadAll(infoReq.Body)
 				if err != nil {
-					log.Fatalf("error reading axe info: %s", err)
+					println(fmt.Sprintf("error reading axe info: %s", err))
+					os.Exit(1)
 				}
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					log.Fatalf("error unmarshalling axe info: %s", err)
+					println(fmt.Sprintf("error unmarshalling axe info: %s", err))
+					os.Exit(1)
 				}
+				/// this gets unmarshalled into the same struct to fill the rest of the data
+				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", ip))
+				if err != nil {
+					println(fmt.Sprintf("error getting axe info: %s", err))
+					os.Exit(1)
+				}
+				body, err = io.ReadAll(asicReq.Body)
+				if err != nil {
+					println(fmt.Sprintf("error reading axe info: %s", err))
+					os.Exit(1)
+				}
+				if err := json.Unmarshal(body, &axeInfo); err != nil {
+					println(fmt.Sprintf("error unmarshalling axe info: %s", err))
+					os.Exit(1)
+				}
+
 			} else {
 				axeInfo = testData
 			}
@@ -102,9 +123,8 @@ func main() {
 			var iconname string
 			if selectedicon != "" {
 				iconname = selectedicon
-				icon = icons.LoadIcon(selectedicon)
+				icon = icons.SearchAndLoadIcon(selectedicon)
 			} else {
-
 				switch conf.General.IconType {
 				case "vendor":
 					println("unimplemented, waiting for efuse")
@@ -123,8 +143,7 @@ func main() {
 					}
 				default:
 					{
-						println("invalid general.icon_type")
-						os.Exit(1)
+						icon = icons.SearchAndLoadIcon(conf.General.IconType)
 					}
 				}
 			}

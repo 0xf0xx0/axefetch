@@ -75,7 +75,9 @@ type formatmatch struct {
 
 // finds format tags by regex, including their target
 func selectFormats(line string) []formatmatch {
+	/// matches groups of tags, eg `{bold}{green}foobar`
 	taggroupreg := regexp.MustCompile(`(\{[#\w\d]+\})+`)
+	/// matches each individual tag
 	tagreg := regexp.MustCompile(`(\{[#\w\d]+\})`)
 	indices := taggroupreg.FindAllStringIndex(line, -1)
 	ret := make([]formatmatch, len(indices))
@@ -86,13 +88,13 @@ func selectFormats(line string) []formatmatch {
 		} else {
 			endIdx = len(line)
 		}
+		/// this is either '{tag}' or '{tag}{tag}...'
 		tagGroup := line[element[0]:element[1]]
-		//println("g:", tagGroup)
 		tagIndices := tagreg.FindAllStringIndex(tagGroup, -1)
-		// fmt.Println(tagIndices)
 		tags := make([]formattag, len(tagIndices))
 		for ii, tag := range tagIndices {
-			//println(tagGroup[tag[0]:tag[1]])
+			/// tag[] is relative to the outer match
+			/// make it relative to the whole line
 			tags[ii] = formattag{Start: element[0]+tag[0], End: element[0]+tag[1]}
 		}
 		ret[i] = formatmatch{tags: tags, targetEnd: endIdx}
@@ -110,9 +112,12 @@ func formatLine(line string) string {
 	/// find+replace in reverse to avoid indexes jumping around
 	for _, fmt := range formats {
 		tags := fmt.tags
+		/// save tags before flippin the array
 		furstTag := tags[0]
 		lastTag := tags[len(tags)-1]
+		/// same with tags
 		slices.Reverse(tags)
+		/// save the target line and update it before substring-replacing
 		formatted := line[lastTag.End:fmt.targetEnd]
 		for _, tag := range tags {
 			color := line[tag.Start+1 : tag.End-1] /// {(color)}
