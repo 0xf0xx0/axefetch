@@ -59,6 +59,7 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:  "ip",
+				Required: true,
 				Usage: "*axe ip address",
 			},
 			&cli.StringFlag{
@@ -73,8 +74,8 @@ func main() {
 			conf = loadConfig(ctx.String("conf"))
 			ip := ctx.String("ip")
 			selectedicon := ctx.String("icon")
-			/// start
 
+			/// start
 			axeInfo := types.ApiInfo{}
 
 			if !ctx.Bool("testing") {
@@ -111,7 +112,6 @@ func main() {
 					println(fmt.Sprintf("error unmarshalling axe info: %s", err))
 					os.Exit(1)
 				}
-
 			} else {
 				axeInfo = testData
 			}
@@ -156,7 +156,7 @@ func main() {
 		},
 	}
 	if err := app.Run(context.TODO(), os.Args); err != nil {
-		println(err)
+		println(fmt.Sprint(err))
 		os.Exit(1)
 	}
 }
@@ -185,6 +185,8 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 
 // processes the format string and returns a slice of the (valid) lines
 func processFormat(format string, data types.ApiInfo) []string {
+	/// all of this to handle some QUOTES
+	/// I HATE ESCAPING
 	split, _ := splitter.NewSplitter(' ', splitter.DoubleQuotesBackSlashEscaped)
 	split.AddDefaultOptions(splitter.IgnoreEmpties, splitter.StripQuotes)
 	res := []string{}

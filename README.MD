@@ -26,7 +26,7 @@ go build
 - [ ] clean + optimize code
 - [ ] more info functions
     - [ ] add vendor to model string ("GekkoScience 601") (relies on bitaxeorg/ESP-Miner/issues/716)
-    - [ ] model family ("Supra 401") (relies on bitaxeorg/ESP-Miner/pulls/966)
+    - [x] model family ("Supra 401") (implemented, relies on bitaxeorg/ESP-Miner/pull/966)
 - [ ] add icons
     - [ ] add support for no icon
     - same as info

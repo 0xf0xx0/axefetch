@@ -2,6 +2,7 @@ package icons
 
 import (
 	"os"
+	"slices"
 	"strings"
 )
 
