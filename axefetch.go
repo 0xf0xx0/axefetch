@@ -79,7 +79,7 @@ func main() {
 				if ip == "" {
 					log.Fatalln("no ip address given")
 				}
-				req, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/info", ip))
+				req, err := http.Get(fmt.Sprintf("http://%s/api/system/info", ip))
 				if err != nil {
 					log.Fatalf("error getting axe info: %s", err)
 				}

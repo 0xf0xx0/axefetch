@@ -4,7 +4,7 @@
 {green}c$$$$$$%{black}:``,{green}%$$$$$$X
 {green}W&8888W{black}[C8%L]{green}W8888&&
 {green}""""""" {black}z**X {green}"""""""
-{green}       'xXXn`
-{green}      ,p$$$$d,
-{green}     +W$$$$$$W_
-{green}     /q*B$$B*qt
+{green}       'xXXn`       
+{green}      ,p$$$$d,      
+{green}     +W$$$$$$W_     
+{green}     /q*B$$B*qt     
