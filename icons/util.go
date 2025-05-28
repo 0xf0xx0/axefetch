@@ -32,7 +32,7 @@ func loadIcon(path string) []string {
 
 // searches for an icon in the icon dirs and returns it
 func SearchAndLoadIcon(name string) []string {
-	for _, m := range append([]map[string][]string{}, Asics, Models, Vendors, Misc) {
+	for _, m := range append([]map[string][]string{}, Asics, Models, ModelFamilies, Vendors, Misc) {
 		icon, ok := m[name]
 		if !ok {
 			continue

@@ -8,6 +8,10 @@ icon_type = "model"
 icon_spacing = 3
 
 [display]
+# neofetch-like, uses 'info' and 'prin'
+# supports 16 colors and hex colors, wrap them in {}
+# invalid lines (ones that dont start with 'info' or 'prin',
+#   and ones with an invalid number of args) are ignored
 format = """\
 info title
 info underline
@@ -18,6 +22,11 @@ info "Firmware" firmware
 info "Uptime" uptime
 info "Best Difficulty" bestdiff
 info "Shares" shares
+info "Pool" pool
+info "Hashrate" hashrate
+info "Efficiency" efficiency
+info "Heap" heap
+
 prin circlejerking into open source
 InFo "invalid line" invalid
 """
@@ -25,6 +34,7 @@ InFo "invalid line" invalid
 # default: 'board'
 # values: 'vendor', 'family', 'manual'
 colors = "manual"
+bold_titles = true
 
 [colors]
 # only used if display.colors is set to "manual"
@@ -37,17 +47,17 @@ separator = "blackbright"
 info = "cyan"
 
 [title]
-workername = true
+worker_name = true
 hostname = true
 
 [model]
-boardversion = true
+board_version = true
 vendor = true # todo
 family = true # todo
 
 [asicmodel]
-asiccount = true
-smallcorecount = true # todo, asicCount * smallCoreCount
+asic_count = true
+small_core_count = true # todo/maybe, asicCount * smallCoreCount
 
 [bestdiff]
 ath = true
@@ -56,8 +66,21 @@ session = true
 # on:  '21M/210M'
 shortpaw = "off"
 
+[efficiency]
+expected = true
+actual = true
+shortpaw = "off"
+
 [firmware]
 version = true
+
+[hashrate]
+expected = true
+actual = true
+shortpaw = "off"
+
+[pool]
+port = true
 
 [shares]
 # off: '200 accepted, 4 rejected'
@@ -65,3 +88,6 @@ version = true
 shortpaw = "off"
 # appends the accept/reject ratio % to the share string
 ratio = true
+
+[uptime]
+format = "%dd %hh %mm %ss"

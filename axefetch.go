@@ -43,10 +43,6 @@ var testData = types.ApiInfo{
 
 func main() {
 	paths.MakeConfigDirTree()
-	conf = loadConfig([]string{
-		//filepath.Join(paths.CONFIG_ROOT, "./config.toml"),
-		"./config.toml",
-	})
 
 	app := &cli.Command{
 		Name:                   "axefetch",
@@ -56,6 +52,11 @@ func main() {
 		UseShortOptionHandling: true,
 		EnableShellCompletion:  true,
 		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:  "conf",
+				Usage: "config file path",
+				Value: "./config.toml",
+			},
 			&cli.StringFlag{
 				Name:  "ip",
 				Usage: "*axe ip address",
@@ -69,6 +70,7 @@ func main() {
 			},
 		},
 		Action: func(_ context.Context, ctx *cli.Command) error {
+			conf = loadConfig(ctx.String("conf"))
 			ip := ctx.String("ip")
 			selectedicon := ctx.String("icon")
 			/// start
@@ -151,8 +153,7 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 		for diff := len(info) - len(icon); diff > 0; diff-- {
 			icon = append(icon, strings.Repeat(" ", padLen))
 		}
-	}
-	if len(icon) > len(info) {
+	} else if len(icon) > len(info) {
 		/// lazily pad the info slice
 		for diff := len(icon) - len(info); diff > 0; diff-- {
 			info = append(info, "")
@@ -219,11 +220,19 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 	/// <subtitle> <func>
 	case 2:
 		{
-			ret = modules.Modules[args[1]](conf, data, []string{})
+			fn := modules.Modules[args[1]]
+			if fn == nil {
+				return ret
+			}
+			ret = fn(conf, data, []string{})
 			if ret == "" {
 				return ret
 			}
-			ret = fmt.Sprintf("%s%s %s", colors.TagString(args[0], conf.Colors.Subtitle),
+			subtitle := colors.TagString(args[0], conf.Colors.Subtitle)
+			if conf.Display.BoldTitles {
+				subtitle = colors.TagString(subtitle, "bold")
+			}
+			ret = fmt.Sprintf("%s%s %s", subtitle,
 				colors.TagString(conf.General.Separator, conf.Colors.Separator),
 				colors.TagString(ret, conf.Colors.Info))
 			break
@@ -232,19 +241,19 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 	return ret
 }
 
-func loadConfig(paths []string) types.Config {
+func loadConfig(path string) types.Config {
 	var conf types.Config
-	for _, path := range paths {
-		configfile, err := os.ReadFile(path)
-		if err != nil {
-			println(fmt.Sprintf("failed to load config at %s: %s", path, err))
-			continue
-		}
-		if err := toml.Unmarshal(configfile, &conf); err != nil {
-			println(fmt.Sprintf("failed to decode config at %s: %s", path, err))
-			os.Exit(1)
-		}
-		break
+	// configfile, err := os.ReadFile(path)
+	configfile, err := os.Open(path)
+	if err != nil {
+		println(fmt.Sprintf("failed to load config at %s: %s", path, err))
+		os.Exit(1)
+	}
+	d := toml.NewDecoder(configfile)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&conf); err != nil {
+		println(fmt.Sprintf("failed to decode config at %s: %s", path, err))
+		os.Exit(1)
 	}
 	return conf
 }

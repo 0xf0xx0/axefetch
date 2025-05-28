@@ -2,6 +2,7 @@ package modules
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -21,10 +22,18 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			} else {
 				workername = getWorkerFromUser(ai.StratumUser)
 			}
-			ret = append(ret, colors.TagString(workername, conf.Colors.Title))
+			workername = colors.TagString(workername, conf.Colors.Title)
+			if conf.Display.BoldTitles {
+				workername = colors.TagString(workername, "bold")
+			}
+			ret = append(ret, workername)
 		}
 		if conf.Title.Hostname {
-			ret = append(ret, colors.TagString(ai.Hostname, conf.Colors.Title))
+			hostname := colors.TagString(ai.Hostname, conf.Colors.Title)
+			if conf.Display.BoldTitles {
+				hostname = colors.TagString(hostname, "bold")
+			}
+			ret = append(ret, hostname)
 		}
 		return strings.Join(ret, colors.TagString("@", conf.Colors.At))
 	},
@@ -37,13 +46,6 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 
 	/// normal functions
-	"model": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		ret := []string{}
-		if conf.Model.Boardversion {
-			ret = append(ret, ai.BoardVersion)
-		}
-		return strings.Join(ret, " ")
-	},
 	"asicmodel": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
 		/// this gets prepended
@@ -52,17 +54,6 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		}
 		ret = append(ret, ai.AsicModel)
 		return strings.Join(ret, " ")
-	},
-	"firmware": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		ret := []string{"ESP-Miner"}
-		if conf.Firmware.Version {
-			ret = append(ret, ai.Version)
-		}
-		return strings.Join(ret, " ")
-	},
-	"uptime": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		/// TODO: use date format strings?
-		return (time.Second * time.Duration(ai.UptimeSeconds)).String()
 	},
 	"bestdiff": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
@@ -78,6 +69,73 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		}
 		return strings.Join(ret, ", ")
 	},
+	"efficiency": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		ret := []string{}
+		shortpawed := conf.Efficiency.Shortpaw == "on"
+		/// MAYBE: flip to TH/s when hashrate > 1000?
+		if conf.Hashrate.Actual {
+			actualEff := ai.Power / (ai.Hashrate / 1000)
+			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f J/TH", actualEff), "(actual)", shortpawed))
+		}
+		if conf.Hashrate.Expected {
+			expectedEff := ai.Power / (float64(ai.ExpectedHashrate) / 1000)
+			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f J/TH", expectedEff), "(expected)", shortpawed))
+		}
+		return strings.Join(ret, ", ")
+	},
+	"firmware": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		ret := []string{"ESP-Miner"}
+		if conf.Firmware.Version {
+			ret = append(ret, ai.Version)
+		}
+		return strings.Join(ret, " ")
+	},
+	"hashrate": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		ret := []string{}
+		shortpawed := conf.Hashrate.Shortpaw == "on"
+		/// MAYBE: flip to TH/s when hashrate > 1000?
+		if conf.Hashrate.Actual {
+			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f GH/s", ai.Hashrate), "(actual)", shortpawed))
+		}
+		if conf.Hashrate.Expected {
+			ret = append(ret, printWithShortpaw(fmt.Sprintf("%d GH/s", ai.ExpectedHashrate), "(expected)", shortpawed))
+		}
+		return strings.Join(ret, ", ")
+	},
+	"heap": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		/// MAYBE: use a unit format module?
+		mib := float32(ai.FreeHeap) / (1024 * 1024)
+		return fmt.Sprintf("%.2g MiB", mib)
+	},
+	"model": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		ret := []string{}
+		if conf.Model.Vendor {
+			/// TODO
+			// ret = append(ret, ai.BoardVendor)
+		}
+		if conf.Model.Family {
+			ret = append(ret, ai.BoardFamily)
+		}
+		if conf.Model.Boardversion {
+			ret = append(ret, ai.BoardVersion)
+		}
+		return strings.Join(ret, " ")
+	},
+	"pool": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		ret := ai.StratumURL
+		port := ""
+		if ai.IsUsingFallbackStratum == 1 {
+			ret = ai.FallbackStratumURL
+		}
+		if conf.Pool.Port {
+			port = ":"
+			port += strconv.FormatInt(int64(ai.StratumPort), 10)
+			if ai.IsUsingFallbackStratum == 1 {
+				port += strconv.FormatInt(int64(ai.FallbackStratumPort), 10)
+			}
+		}
+		return ret + port
+	},
 	"shares": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
 		shortpawed := conf.Shares.Shortpaw == "on"
@@ -87,6 +145,18 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			return fmt.Sprintf("%s (%.2f%%)", strings.Join(ret, ", "), float32(ai.SharesRejected)/float32(ai.SharesAccepted)*100)
 		}
 		return strings.Join(ret, ", ")
+	},
+	"uptime": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		/// TODO: use date format strings?
+		time := (time.Second * time.Duration(ai.UptimeSeconds))
+		ret := conf.Uptime.Format
+		replacer := strings.NewReplacer(
+			"%d", strconv.Itoa(int(time.Hours())/24),
+			"%h", strconv.Itoa(int(time.Hours())%24),
+			"%m", strconv.Itoa(int(time.Minutes())%60),
+			"%s", strconv.Itoa(int(time.Seconds())%60),
+		)
+		return replacer.Replace(ret)
 	},
 }
 
