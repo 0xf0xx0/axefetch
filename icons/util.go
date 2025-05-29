@@ -2,20 +2,8 @@ package icons
 
 import (
 	"os"
-	"slices"
 	"strings"
 )
-
-// loads an icon from a path
-func loadIcon(path string) []string {
-	contents, err := os.ReadFile(path)
-	if err != nil {
-		//println(err.Error()) /// TODO: what to do with this error...
-		return nil
-	}
-	/// trim trailing newlines, used for padding the info string when the icon is shorter
-	return strings.Split(strings.Trim(string(contents), "\n"), "\n")
-}
 
 // tries to load an icon by path, and if that fails searches for it in the icon dirs
 func SearchAndLoadIcon(name string) []string {
@@ -34,4 +22,15 @@ func SearchAndLoadIcon(name string) []string {
 		}
 	}
 	return icon
+}
+
+// loads an icon from a path
+func loadIcon(path string) []string {
+	contents, err := os.ReadFile(path)
+	if err != nil {
+		//println(err.Error()) /// TODO: what to do with this error...
+		return nil
+	}
+	/// trim trailing newlines, used for padding the info string when the icon is shorter
+	return strings.Split(strings.Trim(string(contents), "\n"), "\n")
 }

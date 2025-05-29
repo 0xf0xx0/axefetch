@@ -26,19 +26,24 @@ var testData = types.ApiInfo{
 	AsicModel:              "BM1370",
 	BestDiff:               "210M",
 	BestSessionDiff:        "21M",
+	BoardFamily:            "Gamma",
 	BoardVersion:           "601",
 	StratumURL:             "not-so-public-pool.io",
 	StratumPort:            3373,
 	StratumUser:            "bc1qtesting.test-miner",
 	FallbackStratumURL:     "closed-source-pool.evil",
 	FallbackStratumPort:    666,
-	FallbackStratumUser:    "bc1qfallback",
+	FallbackStratumUser:    "bc1qfakefallbackaddress",
 	IsUsingFallbackStratum: 0,
 	Hostname:               "bitaxe",
 	Version:                "v2.8.0",
 	UptimeSeconds:          481824,
 	SharesAccepted:         881,
 	SharesRejected:         423,
+	Hashrate:               1420,
+	ExpectedHashrate:       1420,
+	Power:                  20,
+	FreeHeap:               8 * 1024 * 1024,
 }
 
 func main() {
@@ -58,9 +63,8 @@ func main() {
 				Value: filepath.Join(paths.CONFIG_ROOT, "config.toml"),
 			},
 			&cli.StringFlag{
-				Name:  "ip",
-				Required: true,
-				Usage: "*axe ip address",
+				Name:     "ip",
+				Usage:    "*axe ip address",
 			},
 			&cli.StringFlag{
 				Name:  "icon",
@@ -72,7 +76,10 @@ func main() {
 		},
 		Action: func(_ context.Context, ctx *cli.Command) error {
 			conf = loadConfig(ctx.String("conf"))
-			ip := ctx.String("ip")
+			ip := conf.General.IP
+			if passedIP := ctx.String("ip"); passedIP != "" {
+				ip = passedIP
+			}
 			selectedicon := ctx.String("icon")
 
 			/// start
@@ -80,37 +87,30 @@ func main() {
 
 			if !ctx.Bool("testing") {
 				if ip == "" {
-					println("no ip address given")
-					os.Exit(1)
+					return cli.Exit("no ip address given", 1)
 				}
 				infoReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", ip))
 				if err != nil {
-					println(fmt.Sprintf("error getting axe info: %s", err))
-					os.Exit(1)
+					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
 				body, err := io.ReadAll(infoReq.Body)
 				if err != nil {
-					println(fmt.Sprintf("error reading axe info: %s", err))
-					os.Exit(1)
+					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
 				}
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					println(fmt.Sprintf("error unmarshalling axe info: %s", err))
-					os.Exit(1)
+					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
 				/// this gets unmarshalled into the same struct to fill the rest of the data
 				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", ip))
 				if err != nil {
-					println(fmt.Sprintf("error getting axe info: %s", err))
-					os.Exit(1)
+					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
 				body, err = io.ReadAll(asicReq.Body)
 				if err != nil {
-					println(fmt.Sprintf("error reading axe info: %s", err))
-					os.Exit(1)
+					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
 				}
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					println(fmt.Sprintf("error unmarshalling axe info: %s", err))
-					os.Exit(1)
+					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
 			} else {
 				axeInfo = testData
@@ -147,8 +147,7 @@ func main() {
 				}
 			}
 			if icon == nil {
-				println(fmt.Sprintf("couldnt load icon %q, does it exist?", iconname))
-				os.Exit(1)
+				return cli.Exit(fmt.Sprintf("couldnt load icon %q, does it exist?", iconname), 1)
 			}
 			/// print
 			fmt.Println(strings.Join(stitchIconAndInfo(icon, info, conf.General.IconSpacing), "\n"))
@@ -157,7 +156,6 @@ func main() {
 	}
 	if err := app.Run(context.TODO(), os.Args); err != nil {
 		println(fmt.Sprint(err))
-		os.Exit(1)
 	}
 }
 

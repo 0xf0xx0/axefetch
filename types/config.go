@@ -2,16 +2,17 @@ package types
 
 type Config struct {
 	General struct {
+		IP          string `toml:"ip" comment:"IP address of your *axe"`
 		Separator   string `toml:"separator" comment:"Separator between subtitle and info"`
 		Underline   string `toml:"underline" comment:"Underline char"`
-		Icon        bool   `toml:"icon" comment:"selected icon name or path"`
-		IconType    string `toml:"icon_type" comment:"default: 'model'\nvalues: 'vendor', 'family', 'model', path to ascii art in a plaintext file"`
-		IconSpacing int    `toml:"icon_spacing" comment:"spaces between the icon and the info"`
+		Icon        bool   `toml:"icon" comment:"Selected icon name or path"`
+		IconType    string `toml:"icon_type" comment:"Default: 'model'\nValues: 'vendor', 'family', 'model', path to ascii art in a plaintext file"`
+		IconSpacing int    `toml:"icon_spacing" comment:"Spaces between the icon and the info"`
 	} `toml:"general"`
 	Display struct {
-		Format string `toml:"format" comment:"neofetch-like, uses 'info' and 'prin'\nsupports 16 colors and hex colors, wrap them in {}"`
-		Colors string `toml:"colors" comment:"default: 'board'\nvalues: 'vendor', 'family', 'manual'"`
-		BoldTitles  bool   `toml:"bold_titles" comment:""`
+		Format     string `toml:"format" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 colors and hex colors, wrap them in {}"`
+		Colors     string `toml:"colors" comment:"Default: 'board'\nBalues: 'vendor', 'family', 'manual'"`
+		BoldTitles bool   `toml:"bold_titles"`
 	} `toml:"display"`
 	Colors struct {
 		Title     string `toml:"title"`

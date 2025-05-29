@@ -129,9 +129,10 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		}
 		if conf.Pool.Port {
 			port = ":"
-			port += strconv.FormatInt(int64(ai.StratumPort), 10)
 			if ai.IsUsingFallbackStratum == 1 {
 				port += strconv.FormatInt(int64(ai.FallbackStratumPort), 10)
+			} else {
+				port += strconv.FormatInt(int64(ai.StratumPort), 10)
 			}
 		}
 		return ret + port
@@ -168,10 +169,12 @@ func printWithShortpaw(str, shortpaw string, shouldBeShort bool) string {
 	}
 	return fmt.Sprintf("%s %s", str, shortpaw)
 }
+// tries to get the worker name from the username string ('address.worker'),
+// otherwise truncates the address
 func getWorkerFromUser(username string) string {
 	split := strings.Split(username, ".")
 	if len(split) == 1 {
-		return username
+		return fmt.Sprintf("%s...%s", username[:4], username[len(username)-4:])
 	}
 	return split[1]
 }
