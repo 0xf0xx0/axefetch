@@ -6,7 +6,6 @@ import (
 	"github.com/0xf0xx0/axefetch/paths"
 )
 
-
 // bitaxe vendor list https://bitaxe.org/buy
 // at least, the ones i know are legit
 // TODO: icons for each vendor

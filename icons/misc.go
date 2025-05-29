@@ -7,5 +7,6 @@ import (
 )
 
 var Misc = map[string][]string{
+	"bitcoin": loadIcon(filepath.Join(paths.MISC_ROOT, "bitcoin.txt")),
 	"osmu": loadIcon(filepath.Join(paths.MISC_ROOT, "osmu.txt")),
 }

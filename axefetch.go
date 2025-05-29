@@ -15,6 +15,7 @@ import (
 	"github.com/0xf0xx0/axefetch/modules"
 	"github.com/0xf0xx0/axefetch/paths"
 	"github.com/0xf0xx0/axefetch/types"
+
 	"github.com/go-andiamo/splitter"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/urfave/cli/v3"
@@ -63,8 +64,8 @@ func main() {
 				Value: filepath.Join(paths.CONFIG_ROOT, "config.toml"),
 			},
 			&cli.StringFlag{
-				Name:     "ip",
-				Usage:    "*axe ip address",
+				Name:  "ip",
+				Usage: "*axe ip address",
 			},
 			&cli.StringFlag{
 				Name:  "icon",
@@ -174,8 +175,9 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 			info = append(info, "")
 		}
 	}
+	spaces := strings.Repeat(" ", spacing)
 	for i := range icon {
-		res = append(res, fmt.Sprintf("%s%s%s", colors.ProcessTags(icon[i]), strings.Repeat(" ", spacing), colors.ProcessTags(info[i])))
+		res = append(res, fmt.Sprintf("%s%s%s%s", spaces, colors.ProcessTags(icon[i]), spaces, colors.ProcessTags(info[i])))
 	}
 	return res
 }

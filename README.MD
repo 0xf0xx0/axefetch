@@ -23,13 +23,16 @@ go build
 ```
 
 # TODO
-- [ ] clean + optimize code
+- [?] clean + optimize code (like half done)
 - [ ] more info functions
-    - [ ] add vendor to model string ("GekkoScience 601") (relies on bitaxeorg/ESP-Miner/issues/716)
-    - [x] model family ("Supra 401") (implemented, relies on bitaxeorg/ESP-Miner/pull/966)
+    - [ ] vendor ("GekkoScience 601") (depends on bitaxeorg/ESP-Miner/issues/716)
+    - [x] model family ("Supra 401") (implemented, depends on bitaxeorg/ESP-Miner/pull/966)
 - [ ] add icons
     - [ ] add support for no icon
-    - same as info
+    - same as info, but not dependent on pulls
 - [ ] add color themes
-    - same as info
+    - same as icons
 - [ ] add docs to config
+
+bitcoin icon from https://bitcoinicons.com  
+gamma icon from https://svgsilh.com/image/309911.html

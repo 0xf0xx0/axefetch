@@ -10,6 +10,9 @@
             "remove_trailing_whitespace_on_save": false,
             "auto_indent_on_paste": false,
             "ensure_final_newline_on_save": false
+        },
+        "Markdown": {
+            "remove_trailing_whitespace_on_save": false
         }
     }
 }
