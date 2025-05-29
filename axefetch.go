@@ -60,22 +60,31 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "conf",
-				Usage: "config file path",
+				Usage: "config file `path`",
 				Value: filepath.Join(paths.CONFIG_ROOT, "config.toml"),
 			},
 			&cli.StringFlag{
 				Name:  "ip",
-				Usage: "*axe ip address",
+				Usage: "*axe ip `address`",
 			},
 			&cli.StringFlag{
 				Name:  "icon",
 				Usage: "ascii icon to use (name, path, or 'none')",
 			},
 			&cli.BoolFlag{
-				Name: "testing",
+				Name:   "testing",
+				Hidden: true,
+			},
+			&cli.StringFlag{
+				Name:   "createdefaultconfig",
+				Hidden: true,
 			},
 		},
 		Action: func(_ context.Context, ctx *cli.Command) error {
+			if path := ctx.String("createdefaultconfig"); path != "" {
+				writeDefaultConfig(path)
+				return nil
+			}
 			conf = loadConfig(ctx.String("conf"))
 			ip := conf.General.IP
 			if passedIP := ctx.String("ip"); passedIP != "" {
@@ -124,9 +133,11 @@ func main() {
 				iconname = selectedicon
 				icon = icons.SearchAndLoadIcon(selectedicon)
 			} else {
-				switch conf.General.IconType {
+				switch conf.General.Icon {
 				case "vendor":
 					println("unimplemented, waiting for efuse")
+					fallthrough
+				case "family":
 					fallthrough
 				case "model":
 					{
@@ -140,9 +151,13 @@ func main() {
 						icon = icons.Asics[iconname]
 						break
 					}
+				case "none":
+					{
+						icon = []string{""}
+					}
 				default:
 					{
-						icon = icons.SearchAndLoadIcon(conf.General.IconType)
+						icon = icons.SearchAndLoadIcon(conf.General.Icon)
 					}
 				}
 			}
@@ -161,17 +176,18 @@ func main() {
 
 func stitchIconAndInfo(icon, info []string, spacing int) []string {
 	res := []string{}
-
-	if len(icon) < len(info) {
+	iconLen := len(icon)
+	infoLen := len(info)
+	if iconLen < infoLen {
 		/// strip color tags to get print length
-		padLen := len(colors.StripLine(icon[len(icon)-1]))
+		repeat := strings.Repeat(" ", len(colors.StripLine(icon[iconLen-1])))
 		/// pad the icon slice
-		for diff := len(info) - len(icon); diff > 0; diff-- {
-			icon = append(icon, strings.Repeat(" ", padLen))
+		for diff := infoLen - iconLen; diff > 0; diff-- {
+			icon = append(icon, repeat)
 		}
-	} else if len(icon) > len(info) {
+	} else if iconLen > infoLen {
 		/// lazily pad the info slice
-		for diff := len(icon) - len(info); diff > 0; diff-- {
+		for diff := iconLen - infoLen; diff > 0; diff-- {
 			info = append(info, "")
 		}
 	}
@@ -182,7 +198,7 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 	return res
 }
 
-// processes the format string and returns a slice of the (valid) lines
+// processes the display format string and returns a slice of the (valid) lines
 func processFormat(format string, data types.ApiInfo) []string {
 	/// all of this to handle some QUOTES
 	/// I HATE ESCAPING
@@ -275,4 +291,87 @@ func loadConfig(path string) types.Config {
 		os.Exit(1)
 	}
 	return conf
+}
+func writeDefaultConfig(path string) error {
+	defaultDisplayFormat := strings.Join([]string{
+		`this is an invalid line, so its not printed :3`,
+		`info title`,
+		`info underline`,
+		`info "Model" model`,
+		`info "ASIC(s)" asicmodel`,
+		`info "Firmware" firmware`,
+		`info "Uptime" uptime`,
+		`info "Best Difficulty" bestdiff`,
+		`info "Shares" shares`,
+		`info "Pool" pool`,
+		`info "Hashrate" hashrate`,
+		`info "Efficiency" efficiency`,
+		`info "Heap" heap`,
+		``,
+		`prin circlejerking into open source`,
+	}, "\n")
+
+	defaultConf := types.Config{
+		General: types.General{
+			IP:          "replace me",
+			Separator:   ":",
+			Underline:   "-",
+			Icon:        "model",
+			IconSpacing: 3,
+		},
+		Display: types.Display{
+			Format:     defaultDisplayFormat,
+			Colors:     "family",
+			BoldTitles: true,
+		},
+		Colors: types.Colors{
+			Title:     "green",
+			At:        "white",
+			Underline: "blackbright",
+			Subtitle:  "green",
+			Separator: "blackbright",
+			Info:      "white",
+		},
+		Title: types.Title{
+			Workername: true,
+			Hostname:   true,
+		},
+		Model: types.Model{
+			Boardversion: true,
+			Family:       false,
+			Vendor:       false,
+		},
+		Asicmodel: types.Asicmodel{
+			Asiccount:      true,
+			Smallcorecount: true,
+		},
+		Efficiency: types.Efficiency{
+			Expected: true,
+			Actual:   true,
+			Shortpaw: "off",
+		},
+		Firmware: types.Firmware{
+			Version: true,
+		},
+		Hashrate: types.Hashrate{
+			Expected: true,
+			Actual:   true,
+			Shortpaw: "off",
+		},
+		Pool: types.Pool{
+			Port: true,
+		},
+		Shares: types.Shares{
+			Ratio:    true,
+			Shortpaw: "off",
+		},
+		Uptime: types.Uptime{
+			Format: "%dd %hh %mm %ss",
+		},
+	}
+	conf, _ := toml.Marshal(defaultConf)
+	if err := os.WriteFile(path, conf, 0755); err != nil {
+		return cli.Exit(fmt.Sprintf("couldnt create config file: %s", err), 1)
+	}
+	return nil
 }

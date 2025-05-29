@@ -2,10 +2,9 @@
 ip = "127.0.0.1"
 separator = ":"
 underline = "-"
-icon = true
 # default: 'model'
 # values: 'vendor', 'family', 'model', path to ascii art in a plaintext file
-icon_type = "model"
+icon = "model"
 icon_spacing = 3
 
 [display]
@@ -35,7 +34,7 @@ prin circlejerking into open source
 InFo "invalid line" invalid
 """
 
-# default: 'board'
+# default: 'family'
 # values: 'vendor', 'family', 'manual'
 colors = "manual"
 bold_titles = true
@@ -48,7 +47,7 @@ at = "white"
 underline = "blackbright"
 subtitle = "green"
 separator = "blackbright"
-info = "cyan"
+info = "white"
 
 [title]
 worker_name = true

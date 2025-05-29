@@ -13,7 +13,7 @@ var Vendors = map[string][]string{
 	"altair": loadIcon(filepath.Join(paths.VENDOR_ROOT, "altair.txt")),
 	"d-central": loadIcon(filepath.Join(paths.VENDOR_ROOT, "d-central.txt")),
 	"gekkoscience": loadIcon(filepath.Join(paths.VENDOR_ROOT, "gekkoscience.txt")),
-	"solomining": loadIcon(filepath.Join(paths.VENDOR_ROOT, "solomining.txt")),
+	"solominingde": loadIcon(filepath.Join(paths.VENDOR_ROOT, "solominingde.txt")),
 	"solominingco": loadIcon(filepath.Join(paths.VENDOR_ROOT, "solominingco.txt")),
 	"solosatoshi": loadIcon(filepath.Join(paths.VENDOR_ROOT, "solosatoshi.txt")),
 	"tinychiphub": loadIcon(filepath.Join(paths.VENDOR_ROOT, "tinychiphub.txt")),

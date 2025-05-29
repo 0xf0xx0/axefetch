@@ -80,10 +80,11 @@ func selectFormats(line string) []formatmatch {
 	/// matches each individual tag
 	tagreg := regexp.MustCompile(`(\{[#\w\d]+\})`)
 	indices := taggroupreg.FindAllStringIndex(line, -1)
-	ret := make([]formatmatch, len(indices))
+	indicesLen := len(indices)
+	ret := make([]formatmatch, indicesLen)
 	for i, element := range indices {
 		endIdx := 0
-		if i+1 < len(indices) {
+		if i+1 < indicesLen {
 			endIdx = indices[i+1][0]
 		} else {
 			endIdx = len(line)

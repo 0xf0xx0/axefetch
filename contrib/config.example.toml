@@ -1,0 +1,71 @@
+[general]
+# IP address of your *axe
+ip = 'replace me'
+# Separator between subtitle and info
+separator = ':'
+# Underline char
+underline = '-'
+# Selected icon name or path
+# Default: 'model'
+# Values: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file
+icon = 'model'
+# Spaces between the icon and the info
+icon_spacing = 3
+
+[display]
+# Neofetch-like, uses 'info' and 'prin'
+# Supports 16 colors and hex colors, wrap them in {}
+format = "this is an invalid line, so its not printed :3\ninfo title\ninfo underline\ninfo \"Model\" model\ninfo \"ASIC(s)\" asicmodel\ninfo \"Firmware\" firmware\ninfo \"Uptime\" uptime\ninfo \"Best Difficulty\" bestdiff\ninfo \"Shares\" shares\ninfo \"Pool\" pool\ninfo \"Hashrate\" hashrate\ninfo \"Efficiency\" efficiency\ninfo \"Heap\" heap\n\nprin circlejerking into open source"
+# Default: 'board'
+# Values: 'vendor', 'family', 'manual'
+colors = 'family'
+bold_titles = true
+
+[colors]
+title = 'green'
+at = 'white'
+underline = 'blackbright'
+subtitle = 'green'
+separator = 'blackbright'
+info = 'white'
+
+[title]
+worker_name = true
+hostname = true
+
+[model]
+board_version = true
+family = false
+vendor = false
+
+[asicmodel]
+asic_count = true
+small_core_count = true
+
+[bestdiff]
+ath = false
+session = false
+shortpaw = ''
+
+[efficiency]
+expected = true
+actual = true
+shortpaw = 'off'
+
+[firmware]
+version = true
+
+[hashrate]
+expected = true
+actual = true
+shortpaw = 'off'
+
+[pool]
+port = true
+
+[shares]
+shortpaw = 'off'
+ratio = true
+
+[uptime]
+format = '%dd %hh %mm %ss'
