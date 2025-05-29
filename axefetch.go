@@ -80,7 +80,6 @@ func main() {
 			if passedIP := ctx.String("ip"); passedIP != "" {
 				ip = passedIP
 			}
-			selectedicon := ctx.String("icon")
 
 			/// start
 			axeInfo := types.ApiInfo{}
@@ -120,7 +119,7 @@ func main() {
 			/// select the icon
 			var icon []string
 			var iconname string
-			if selectedicon != "" {
+			if selectedicon := ctx.String("icon"); selectedicon != "" {
 				iconname = selectedicon
 				icon = icons.SearchAndLoadIcon(selectedicon)
 			} else {
