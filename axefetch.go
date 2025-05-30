@@ -15,12 +15,88 @@ import (
 	"github.com/0xf0xx0/axefetch/modules"
 	"github.com/0xf0xx0/axefetch/paths"
 	"github.com/0xf0xx0/axefetch/types"
+	"github.com/tiendc/go-deepcopy"
 
 	"github.com/go-andiamo/splitter"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/urfave/cli/v3"
 )
 
+var defaultConf = types.Config{
+	General: types.General{
+		IP: "replace me",
+	},
+	Display: types.Display{
+		Format: strings.Join([]string{
+			`\`,
+			`this is an invalid line, so its not printed :3`,
+			`info title`,
+			`info underline`,
+			`info "Model" model`,
+			`info "ASIC(s)" asicmodel`,
+			`info "Firmware" firmware`,
+			`info "Uptime" uptime`,
+			`info "Best Difficulty" bestdiff`,
+			`info "Shares" shares`,
+			`info "Pool" pool`,
+			`info "Hashrate" hashrate`,
+			`info "Efficiency" efficiency`,
+			`info "Heap" heap`,
+			``,
+			`prin circlejerking into open source`,
+		}, "\n"),
+		Theme:       "family",
+		BoldTitles:  true,
+		Separator:   ":",
+		Underline:   "-",
+		Icon:        "model",
+		IconSpacing: 3,
+	},
+	ColorTheme: types.ColorTheme{
+		Title:     "green",
+		At:        "green",
+		Underline: "white",
+		Subtitle:  "white",
+		Separator: "white",
+		Info:      "white",
+	},
+	Title: types.Title{
+		Workername: true,
+		Hostname:   true,
+	},
+	Model: types.Model{
+		Boardversion: true,
+		Family:       false,
+		Vendor:       false,
+	},
+	Asicmodel: types.Asicmodel{
+		Asiccount:      true,
+		Smallcorecount: true,
+	},
+	Efficiency: types.Efficiency{
+		Expected: true,
+		Actual:   true,
+		Shortpaw: "off",
+	},
+	Firmware: types.Firmware{
+		Version: true,
+	},
+	Hashrate: types.Hashrate{
+		Expected: true,
+		Actual:   true,
+		Shortpaw: "off",
+	},
+	Pool: types.Pool{
+		Port: true,
+	},
+	Shares: types.Shares{
+		Ratio:    true,
+		Shortpaw: "off",
+	},
+	Uptime: types.Uptime{
+		Format: "%dd %hh %mm %ss",
+	},
+}
 var conf types.Config /// im not passing this stupid struct around
 var testData = types.ApiInfo{
 	AsicCount:              1,
@@ -48,7 +124,9 @@ var testData = types.ApiInfo{
 }
 
 func main() {
-	paths.MakeConfigDirTree()
+	if paths.MakeConfigDirTree(defaultConf) {
+		writeDefaultConfig(filepath.Join(paths.CONFIG_ROOT, "config.toml"))
+	}
 
 	app := &cli.Command{
 		Name:                   "axefetch",
@@ -71,6 +149,10 @@ func main() {
 				Name:  "icon",
 				Usage: "ascii icon to use (name, path, or 'none')",
 			},
+			&cli.StringFlag{
+				Name:  "theme",
+				Usage: "color `theme` (name, 'manual')",
+			},
 			&cli.BoolFlag{
 				Name:   "testing",
 				Hidden: true,
@@ -85,20 +167,25 @@ func main() {
 				writeDefaultConfig(path)
 				return nil
 			}
-			conf = loadConfig(ctx.String("conf"))
-			ip := conf.General.IP
+			/// set defaults
+			deepcopy.Copy(&conf, &defaultConf)
+			loadConfig(ctx.String("conf"), &conf)
+			/// config overrides
 			if passedIP := ctx.String("ip"); passedIP != "" {
-				ip = passedIP
+				conf.General.IP = passedIP
+			}
+			if passedTheme := ctx.String("theme"); passedTheme != "" {
+				conf.Display.Theme = passedTheme
 			}
 
 			/// start
 			axeInfo := types.ApiInfo{}
 
 			if !ctx.Bool("testing") {
-				if ip == "" {
+				if conf.General.IP == "" {
 					return cli.Exit("no ip address given", 1)
 				}
-				infoReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", ip))
+				infoReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
@@ -109,8 +196,9 @@ func main() {
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
 					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
-				/// this gets unmarshalled into the same struct to fill the rest of the data
-				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", ip))
+				/// this gets unmarshalled into the same struct to fill the rest of the asic info
+				/// just board family currently
+				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
@@ -124,48 +212,66 @@ func main() {
 			} else {
 				axeInfo = testData
 			}
-			info := processFormat(conf.Display.Format, axeInfo)
 
 			/// select the icon
 			var icon []string
-			var iconname string
 			if selectedicon := ctx.String("icon"); selectedicon != "" {
-				iconname = selectedicon
-				icon = icons.SearchAndLoadIcon(selectedicon)
-			} else {
-				switch conf.General.Icon {
-				case "vendor":
-					println("unimplemented, waiting for efuse")
-					fallthrough
-				case "family":
-					fallthrough
-				case "model":
-					{
-						iconname = testData.BoardVersion
-						icon = icons.Models[iconname]
-						break
-					}
-				case "asic":
-					{
-						iconname = testData.AsicModel
-						icon = icons.Asics[iconname]
-						break
-					}
-				case "none":
-					{
-						icon = []string{""}
-					}
-				default:
-					{
-						icon = icons.SearchAndLoadIcon(conf.General.Icon)
-					}
+				conf.Display.Icon = selectedicon
+			}
+			switch conf.Display.Icon {
+			case "vendor":
+				println("unimplemented, waiting for efuse")
+				fallthrough
+			case "family":
+				fallthrough
+			case "model":
+				{
+					conf.Display.Icon = axeInfo.BoardVersion
+					icon = icons.Models[conf.Display.Icon]
+					break
+				}
+			case "asic":
+				{
+					conf.Display.Icon = axeInfo.AsicModel
+					icon = icons.Asics[conf.Display.Icon]
+					break
+				}
+			case "none":
+				{
+					icon = []string{""}
+					conf.Display.IconSpacing = 0
+				}
+			default:
+				{
+					icon = icons.SearchAndLoadIcon(conf.Display.Icon)
 				}
 			}
 			if icon == nil {
-				return cli.Exit(fmt.Sprintf("couldnt load icon %q, does it exist?", iconname), 1)
+				return cli.Exit(fmt.Sprintf("couldnt load icon %q, does it exist?", conf.Display.Icon), 1)
 			}
+			switch conf.Display.Theme {
+			case "manual":
+				{
+					break
+				}
+			case "vendor":
+				fallthrough
+			case "family":
+				{
+					conf.Display.Theme = axeInfo.BoardFamily
+					break
+				}
+			default:{}
+			}
+			if theme, ok := colors.Themes[conf.Display.Theme]; ok {
+				conf.ColorTheme = theme
+			} else {
+				return cli.Exit("unknown theme name", 1)
+			}
+
 			/// print
-			fmt.Println(strings.Join(stitchIconAndInfo(icon, info, conf.General.IconSpacing), "\n"))
+			info := processFormat(conf.Display.Format, axeInfo)
+			fmt.Println(strings.Join(stitchIconAndInfo(icon, info, conf.Display.IconSpacing), "\n"))
 			return nil
 		},
 	}
@@ -191,9 +297,8 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 			info = append(info, "")
 		}
 	}
-	spaces := strings.Repeat(" ", spacing)
 	for i := range icon {
-		res = append(res, fmt.Sprintf("%s%s%s%s", spaces, colors.ProcessTags(icon[i]), spaces, colors.ProcessTags(info[i])))
+		res = append(res, fmt.Sprintf("%s%s%s", colors.ProcessTags(icon[i]), strings.Repeat(" ", spacing), colors.ProcessTags(info[i])))
 	}
 	return res
 }
@@ -228,7 +333,7 @@ func processFormat(format string, data types.ApiInfo) []string {
 			}
 		case "prin":
 			{
-				lastline = strings.Join(args, " ")
+				lastline = colors.TagString(strings.Join(args, " "), conf.ColorTheme.Info)
 				res = append(res, lastline)
 				break
 			}
@@ -263,112 +368,34 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 			if ret == "" {
 				return ret
 			}
-			subtitle := colors.TagString(args[0], conf.Colors.Subtitle)
+			subtitle := colors.TagString(args[0], conf.ColorTheme.Subtitle)
 			if conf.Display.BoldTitles {
 				subtitle = colors.TagString(subtitle, "bold")
 			}
 			ret = fmt.Sprintf("%s%s %s", subtitle,
-				colors.TagString(conf.General.Separator, conf.Colors.Separator),
-				colors.TagString(ret, conf.Colors.Info))
+				colors.TagString(conf.Display.Separator, conf.ColorTheme.Separator),
+				colors.TagString(ret, conf.ColorTheme.Info))
 			break
 		}
 	}
 	return ret
 }
 
-func loadConfig(path string) types.Config {
-	var conf types.Config
-	// configfile, err := os.ReadFile(path)
+func loadConfig(path string, conf *types.Config) {
 	configfile, err := os.Open(path)
 	if err != nil {
 		println(fmt.Sprintf("failed to load config at %s: %s", path, err))
-		os.Exit(1)
+		return
+		//os.Exit(1)
 	}
 	d := toml.NewDecoder(configfile)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&conf); err != nil {
+	if err := d.Decode(conf); err != nil {
 		println(fmt.Sprintf("failed to decode config at %s: %s", path, err))
 		os.Exit(1)
 	}
-	return conf
 }
 func writeDefaultConfig(path string) error {
-	defaultDisplayFormat := strings.Join([]string{
-		`this is an invalid line, so its not printed :3`,
-		`info title`,
-		`info underline`,
-		`info "Model" model`,
-		`info "ASIC(s)" asicmodel`,
-		`info "Firmware" firmware`,
-		`info "Uptime" uptime`,
-		`info "Best Difficulty" bestdiff`,
-		`info "Shares" shares`,
-		`info "Pool" pool`,
-		`info "Hashrate" hashrate`,
-		`info "Efficiency" efficiency`,
-		`info "Heap" heap`,
-		``,
-		`prin circlejerking into open source`,
-	}, "\n")
-
-	defaultConf := types.Config{
-		General: types.General{
-			IP:          "replace me",
-			Separator:   ":",
-			Underline:   "-",
-			Icon:        "model",
-			IconSpacing: 3,
-		},
-		Display: types.Display{
-			Format:     defaultDisplayFormat,
-			Colors:     "family",
-			BoldTitles: true,
-		},
-		Colors: types.Colors{
-			Title:     "green",
-			At:        "white",
-			Underline: "blackbright",
-			Subtitle:  "green",
-			Separator: "blackbright",
-			Info:      "white",
-		},
-		Title: types.Title{
-			Workername: true,
-			Hostname:   true,
-		},
-		Model: types.Model{
-			Boardversion: true,
-			Family:       false,
-			Vendor:       false,
-		},
-		Asicmodel: types.Asicmodel{
-			Asiccount:      true,
-			Smallcorecount: true,
-		},
-		Efficiency: types.Efficiency{
-			Expected: true,
-			Actual:   true,
-			Shortpaw: "off",
-		},
-		Firmware: types.Firmware{
-			Version: true,
-		},
-		Hashrate: types.Hashrate{
-			Expected: true,
-			Actual:   true,
-			Shortpaw: "off",
-		},
-		Pool: types.Pool{
-			Port: true,
-		},
-		Shares: types.Shares{
-			Ratio:    true,
-			Shortpaw: "off",
-		},
-		Uptime: types.Uptime{
-			Format: "%dd %hh %mm %ss",
-		},
-	}
 	conf, _ := toml.Marshal(defaultConf)
 	if err := os.WriteFile(path, conf, 0755); err != nil {
 		return cli.Exit(fmt.Sprintf("couldnt create config file: %s", err), 1)

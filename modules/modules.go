@@ -22,27 +22,27 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			} else {
 				workername = getWorkerFromUser(ai.StratumUser)
 			}
-			workername = colors.TagString(workername, conf.Colors.Title)
+			workername = colors.TagString(workername, conf.ColorTheme.Title)
 			if conf.Display.BoldTitles {
 				workername = colors.TagString(workername, "bold")
 			}
 			ret = append(ret, workername)
 		}
 		if conf.Title.Hostname {
-			hostname := colors.TagString(ai.Hostname, conf.Colors.Title)
+			hostname := colors.TagString(ai.Hostname, conf.ColorTheme.Title)
 			if conf.Display.BoldTitles {
 				hostname = colors.TagString(hostname, "bold")
 			}
 			ret = append(ret, hostname)
 		}
-		return strings.Join(ret, colors.TagString("@", conf.Colors.At))
+		return strings.Join(ret, colors.TagString("@", conf.ColorTheme.At))
 	},
 	// this expects the title string (if any) to be passed in
 	"underline": func(conf types.Config, _ types.ApiInfo, args []string) string {
 		if len(args) == 0 || len(args[0]) == 0 {
 			return ""
 		}
-		return colors.TagString(strings.Repeat(conf.General.Underline, len(args[0])), conf.Colors.Underline)
+		return colors.TagString(strings.Repeat(conf.Display.Underline, len(args[0])), conf.ColorTheme.Underline)
 	},
 
 	/// normal functions

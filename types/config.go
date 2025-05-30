@@ -3,7 +3,7 @@ package types
 type Config struct {
 	General    `toml:"general"`
 	Display    `toml:"display"`
-	Colors     `toml:"colors"`
+	ColorTheme `toml:"theme" comment:"Supports everything display.format does"`
 	Title      `toml:"title"`
 	Model      `toml:"model"`
 	Asicmodel  `toml:"asicmodel"`
@@ -16,18 +16,18 @@ type Config struct {
 	Uptime     `toml:"uptime"`
 }
 type General struct {
-	IP          string `toml:"ip" comment:"IP address of your *axe"`
-	Separator   string `toml:"separator" comment:"Separator between subtitle and info"`
-	Underline   string `toml:"underline" comment:"Underline char"`
-	Icon        string  `toml:"icon" comment:"Selected icon name or path\nDefault: 'model'\nValues: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file"`
-	IconSpacing int    `toml:"icon_spacing" comment:"Spaces between the icon and the info"`
+	IP string `toml:"ip" comment:"IP address of your *axe"`
 }
 type Display struct {
-	Format     string `toml:"format" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 colors and hex colors, wrap them in {}"`
-	Colors     string `toml:"colors" comment:"Default: 'board'\nValues: 'vendor', 'family', 'manual'"`
-	BoldTitles bool   `toml:"bold_titles"`
+	Format      string `toml:"format" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags\n'{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'\ninvalid lines are ignored"`
+	Icon        string `toml:"icon" comment:"Selected icon name or path\nDefault: 'model'\nValues: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file"`
+	IconSpacing int    `toml:"icon_spacing" comment:"Spaces between the icon and the info"`
+	Theme       string `toml:"theme" comment:"Default: 'family'\nValues: 'vendor', 'family', 'manual'"`
+	BoldTitles  bool   `toml:"bold_titles"`
+	Separator   string `toml:"separator" comment:"Separator between subtitle and info"`
+	Underline   string `toml:"underline" comment:"Underline char"`
 }
-type Colors struct {
+type ColorTheme struct {
 	Title     string `toml:"title"`
 	At        string `toml:"at"`
 	Underline string `toml:"underline"`

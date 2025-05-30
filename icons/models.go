@@ -8,26 +8,26 @@ import (
 
 // TODO: icons for each model and family
 var Models = map[string][]string{
-	"102": ModelFamilies["Max"],
+	"102": ModelFamilies["max"],
 
-	"201": ModelFamilies["Ultra"],
-	"202": ModelFamilies["Ultra"],
-	"203": ModelFamilies["Ultra"],
-	"204": ModelFamilies["Ultra"],
-	"205": ModelFamilies["Ultra"],
+	"201": ModelFamilies["ultra"],
+	"202": ModelFamilies["ultra"],
+	"203": ModelFamilies["ultra"],
+	"204": ModelFamilies["ultra"],
+	"205": ModelFamilies["ultra"],
 
-	"400": ModelFamilies["Supra"],
-	"401": ModelFamilies["Supra"],
-	"402": ModelFamilies["Supra"],
-	"403": ModelFamilies["Supra"],
+	"400": ModelFamilies["supra"],
+	"401": ModelFamilies["supra"],
+	"402": ModelFamilies["supra"],
+	"403": ModelFamilies["supra"],
 
-	"600": ModelFamilies["Gamma"],
-	"601": ModelFamilies["Gamma"],
-	"602": ModelFamilies["Gamma"],
+	"600": ModelFamilies["gamma"],
+	"601": ModelFamilies["gamma"],
+	"602": ModelFamilies["gamma"],
 }
 var ModelFamilies = map[string][]string{
-	"Gamma": loadIcon(filepath.Join(paths.MODEL_ROOT, "gamma.txt")),
-	"Max":   loadIcon(filepath.Join(paths.MODEL_ROOT, "max.txt")),
-	"Supra": loadIcon(filepath.Join(paths.MODEL_ROOT, "supra.txt")),
-	"Ultra": loadIcon(filepath.Join(paths.MODEL_ROOT, "ultra.txt")),
+	"gamma": loadIcon(filepath.Join(paths.MODEL_ROOT, "gamma.txt")),
+	"max":   loadIcon(filepath.Join(paths.MODEL_ROOT, "max.txt")),
+	"supra": loadIcon(filepath.Join(paths.MODEL_ROOT, "supra.txt")),
+	"ultra": loadIcon(filepath.Join(paths.MODEL_ROOT, "ultra.txt")),
 }

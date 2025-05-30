@@ -1,17 +1,11 @@
 [general]
-ip = "127.0.0.1"
-separator = ":"
-underline = "-"
-# default: 'model'
-# values: 'vendor', 'family', 'model', path to ascii art in a plaintext file
-icon = "model"
-icon_spacing = 3
+# IP address of your *axe
+ip = 'replace me'
 
 [display]
-# neofetch-like, uses 'info' and 'prin'
-# supports 16 colors and hex colors, wrap them in {}
-# invalid lines (ones that dont start with 'info' or 'prin',
-#   and ones with an invalid number of args) are ignored
+# Neofetch-like, uses 'info' and 'prin'
+# Supports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags
+# '{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'
 format = """\
 info title
 info underline
@@ -33,21 +27,29 @@ what else?
 prin circlejerking into open source
 InFo "invalid line" invalid
 """
-
-# default: 'family'
-# values: 'vendor', 'family', 'manual'
-colors = "manual"
+# Selected icon name or path
+# Default: 'model'
+# Values: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file
+icon = 'model'
+# Spaces between the icon and the info
+icon_spacing = 3
+# Default: 'family'
+# Values: 'vendor', 'family', 'manual'
+theme = 'family'
 bold_titles = true
+# Separator between subtitle and info
+separator = ':'
+# Underline char
+underline = '-'
 
-[colors]
-# only used if display.colors is set to "manual"
-# can be hex, or pick from the usual 16 colors + 'reset'
-title = "green"
-at = "white"
-underline = "blackbright"
-subtitle = "green"
-separator = "blackbright"
-info = "white"
+# Supports everything display.format does
+[theme]
+title = 'green'
+at = 'green'
+underline = 'white'
+subtitle = 'white'
+separator = 'white'
+info = 'white'
 
 [title]
 worker_name = true
@@ -55,24 +57,22 @@ hostname = true
 
 [model]
 board_version = true
-vendor = true # todo
-family = true # todo
+family = false
+vendor = false
 
 [asicmodel]
 asic_count = true
-small_core_count = true # todo/maybe, asicCount * smallCoreCount
+small_core_count = true
 
 [bestdiff]
-ath = true
-session = true
-# off: '21M current, 210M best'
-# on:  '21M/210M'
-shortpaw = "off"
+ath = false
+session = false
+shortpaw = ''
 
 [efficiency]
 expected = true
 actual = true
-shortpaw = "off"
+shortpaw = 'off'
 
 [firmware]
 version = true
@@ -80,17 +80,14 @@ version = true
 [hashrate]
 expected = true
 actual = true
-shortpaw = "off"
+shortpaw = 'off'
 
 [pool]
 port = true
 
 [shares]
-# off: '200 accepted, 4 rejected'
-# on:  '200, 4'
-shortpaw = "off"
-# appends the accept/reject ratio % to the share string
+shortpaw = 'off'
 ratio = true
 
 [uptime]
-format = "%dd %hh %mm %ss"
+format = '%dd %hh %mm %ss'
