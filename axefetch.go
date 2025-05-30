@@ -174,6 +174,9 @@ func main() {
 			if passedIP := ctx.String("ip"); passedIP != "" {
 				conf.General.IP = passedIP
 			}
+			if passedIcon := ctx.String("icon"); passedIcon != "" {
+				conf.Display.Icon = passedIcon
+			}
 			if passedTheme := ctx.String("theme"); passedTheme != "" {
 				conf.Display.Theme = passedTheme
 			}
@@ -215,9 +218,6 @@ func main() {
 
 			/// select the icon
 			var icon []string
-			if selectedicon := ctx.String("icon"); selectedicon != "" {
-				conf.Display.Icon = selectedicon
-			}
 			switch conf.Display.Icon {
 			case "vendor":
 				println("unimplemented, waiting for efuse")
@@ -256,17 +256,15 @@ func main() {
 				}
 			case "vendor":
 				fallthrough
-			case "family":
-				{
-					conf.Display.Theme = axeInfo.BoardFamily
-					break
-				}
-			default:{}
+			case "family":{
+				conf.Display.Theme = axeInfo.BoardFamily
+			}
+			/// no default case, we assume its a theme name and do a lookup
 			}
 			if theme, ok := colors.Themes[conf.Display.Theme]; ok {
 				conf.ColorTheme = theme
-			} else {
-				return cli.Exit("unknown theme name", 1)
+			} else if (conf.Display.Theme != "manual") {
+				return cli.Exit(fmt.Sprintf("unknown theme %q", conf.Display.Theme), 1)
 			}
 
 			/// print
@@ -386,7 +384,6 @@ func loadConfig(path string, conf *types.Config) {
 	if err != nil {
 		println(fmt.Sprintf("failed to load config at %s: %s", path, err))
 		return
-		//os.Exit(1)
 	}
 	d := toml.NewDecoder(configfile)
 	d.DisallowUnknownFields()

@@ -35,7 +35,7 @@ icon = 'model'
 icon_spacing = 3
 # Default: 'family'
 # Values: 'vendor', 'family', 'manual'
-theme = 'family'
+theme = 'manual'
 bold_titles = true
 # Separator between subtitle and info
 separator = ':'
