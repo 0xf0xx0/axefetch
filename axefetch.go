@@ -28,7 +28,6 @@ var defaultConf = types.Config{
 	},
 	Display: types.Display{
 		Format: strings.Join([]string{
-			`\`,
 			`this is an invalid line, so its not printed :3`,
 			`info title`,
 			`info underline`,
@@ -44,6 +43,7 @@ var defaultConf = types.Config{
 			`info "Heap" heap`,
 			``,
 			`prin circlejerking into open source`,
+			``,
 		}, "\n"),
 		Theme:       "family",
 		BoldTitles:  true,
@@ -66,12 +66,17 @@ var defaultConf = types.Config{
 	},
 	Model: types.Model{
 		Boardversion: true,
-		Family:       false,
+		Family:       true,
 		Vendor:       false,
 	},
 	Asicmodel: types.Asicmodel{
 		Asiccount:      true,
 		Smallcorecount: true,
+	},
+	Bestdiff: types.Bestdiff{
+		Ath: true,
+		Session: true,
+		Shortpaw: "off",
 	},
 	Efficiency: types.Efficiency{
 		Expected: true,
@@ -169,16 +174,19 @@ func main() {
 			}
 			/// set defaults
 			deepcopy.Copy(&conf, &defaultConf)
-			loadConfig(ctx.String("conf"), &conf)
+
+			if passedConfig := ctx.String("conf"); passedConfig != "" && passedConfig != "none" {
+				loadConfig(passedConfig, &conf)
+			}
 			/// config overrides
 			if passedIP := ctx.String("ip"); passedIP != "" {
 				conf.General.IP = passedIP
 			}
 			if passedIcon := ctx.String("icon"); passedIcon != "" {
-				conf.Display.Icon = passedIcon
+				conf.Display.Icon = strings.ToLower(passedIcon)
 			}
 			if passedTheme := ctx.String("theme"); passedTheme != "" {
-				conf.Display.Theme = passedTheme
+				conf.Display.Theme = strings.ToLower(passedTheme)
 			}
 
 			/// start
@@ -256,14 +264,15 @@ func main() {
 				}
 			case "vendor":
 				fallthrough
-			case "family":{
-				conf.Display.Theme = axeInfo.BoardFamily
+			case "family":
+				{
+					conf.Display.Theme = axeInfo.BoardFamily
+				}
+				/// no default case, we assume its a theme name and do a lookup
 			}
-			/// no default case, we assume its a theme name and do a lookup
-			}
-			if theme, ok := colors.Themes[conf.Display.Theme]; ok {
+			if theme, ok := colors.Themes[strings.ToLower(conf.Display.Theme)]; ok {
 				conf.ColorTheme = theme
-			} else if (conf.Display.Theme != "manual") {
+			} else if conf.Display.Theme != "manual" {
 				return cli.Exit(fmt.Sprintf("unknown theme %q", conf.Display.Theme), 1)
 			}
 

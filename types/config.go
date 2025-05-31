@@ -1,6 +1,7 @@
 package types
 
 type Config struct {
+	/// maybe omitempty? unneccesary tho, unmarshalling doesnt touch keys that arent in the conf
 	General    `toml:"general"`
 	Display    `toml:"display"`
 	ColorTheme `toml:"theme" comment:"Supports everything display.format does"`
@@ -19,7 +20,7 @@ type General struct {
 	IP string `toml:"ip" comment:"IP address of your *axe"`
 }
 type Display struct {
-	Format      string `toml:"format" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags\n'{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'\ninvalid lines are ignored"`
+	Format      string `toml:"format,multiline" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags\n'{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'\ninvalid lines are ignored"`
 	Icon        string `toml:"icon" comment:"Selected icon name or path\nDefault: 'model'\nValues: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file"`
 	IconSpacing int    `toml:"icon_spacing" comment:"Spaces between the icon and the info"`
 	Theme       string `toml:"theme" comment:"Default: 'family'\nValues: 'vendor', 'family', 'manual', or theme name"`

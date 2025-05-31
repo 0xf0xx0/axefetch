@@ -57,7 +57,7 @@ hostname = true
 
 [model]
 board_version = true
-family = false
+family = true
 vendor = false
 
 [asicmodel]
@@ -65,9 +65,9 @@ asic_count = true
 small_core_count = true
 
 [bestdiff]
-ath = false
-session = false
-shortpaw = ''
+ath = true
+session = true
+shortpaw = 'off'
 
 [efficiency]
 expected = true

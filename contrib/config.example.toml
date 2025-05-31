@@ -7,7 +7,23 @@ ip = 'replace me'
 # Supports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags
 # '{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'
 # invalid lines are ignored
-format = "this is an invalid line, so its not printed :3\ninfo title\ninfo underline\ninfo \"Model\" model\ninfo \"ASIC(s)\" asicmodel\ninfo \"Firmware\" firmware\ninfo \"Uptime\" uptime\ninfo \"Best Difficulty\" bestdiff\ninfo \"Shares\" shares\ninfo \"Pool\" pool\ninfo \"Hashrate\" hashrate\ninfo \"Efficiency\" efficiency\ninfo \"Heap\" heap\n\nprin circlejerking into open source"
+format = """
+this is an invalid line, so its not printed :3
+info title
+info underline
+info \"Model\" model
+info \"ASIC(s)\" asicmodel
+info \"Firmware\" firmware
+info \"Uptime\" uptime
+info \"Best Difficulty\" bestdiff
+info \"Shares\" shares
+info \"Pool\" pool
+info \"Hashrate\" hashrate
+info \"Efficiency\" efficiency
+info \"Heap\" heap
+
+prin circlejerking into open source
+"""
 # Selected icon name or path
 # Default: 'model'
 # Values: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file
@@ -15,7 +31,7 @@ icon = 'model'
 # Spaces between the icon and the info
 icon_spacing = 3
 # Default: 'family'
-# Values: 'vendor', 'family', 'manual'
+# Values: 'vendor', 'family', 'manual', or theme name
 theme = 'family'
 bold_titles = true
 # Separator between subtitle and info
@@ -46,9 +62,9 @@ asic_count = true
 small_core_count = true
 
 [bestdiff]
-ath = false
-session = false
-shortpaw = ''
+ath = true
+session = true
+shortpaw = 'off'
 
 [efficiency]
 expected = true
