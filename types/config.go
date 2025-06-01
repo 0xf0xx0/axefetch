@@ -23,7 +23,7 @@ type General struct {
 }
 type Display struct {
 	Format      string `toml:"format,multiline" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags\n'{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'\ninvalid lines are ignored"`
-	Icon        string `toml:"icon" comment:"Selected icon name or path\nDefault: 'model'\nValues: 'none', 'vendor', 'family', or path to ascii art in a plaintext file"`
+	Icon        string `toml:"icon" comment:"Selected icon name or path\nDefault: 'family'\nValues: 'vendor', 'family', 'none', or path to ascii art in a plaintext file"`
 	IconSpacing int    `toml:"icon_spacing" comment:"Spaces between the icon and the info"`
 	Theme       string `toml:"theme" comment:"Default: 'family'\nValues: 'vendor', 'family', 'manual', or theme name"`
 	BoldTitles  bool   `toml:"bold_titles"`

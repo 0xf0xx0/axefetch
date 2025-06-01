@@ -80,7 +80,6 @@ func selectFormats(line string) []formatmatch {
 // add a format tag to a string
 func TagString(line, color string) string {
 	if line == "" {
-		println("empty line")
 		return line
 	}
 	return fmt.Sprintf("{%s}%s", color, line)
