@@ -47,6 +47,8 @@ underline = 'white'
 subtitle = 'white'
 separator = 'white'
 info = 'white'
+# Default icon color, if the icon doesn't specify it's own
+icon = 'green'
 
 [title]
 worker_name = true
@@ -54,7 +56,7 @@ hostname = true
 
 [model]
 board_version = true
-family = false
+family = true
 vendor = false
 
 [asicmodel]

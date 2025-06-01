@@ -46,10 +46,10 @@ underline = '-'
 [theme]
 title = 'green'
 at = 'green'
-underline = 'white'
-subtitle = 'white'
-separator = 'white'
-info = 'white'
+underline = 'blackbright'
+subtitle = 'green'
+separator = 'blackbright'
+info = 'cyan'
 
 [title]
 worker_name = true

@@ -22,86 +22,6 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var defaultConf = types.Config{
-	General: types.General{
-		IP: "replace me",
-	},
-	Display: types.Display{
-		Format: strings.Join([]string{
-			`this is an invalid line, so its not printed :3`,
-			`info title`,
-			`info underline`,
-			`info "Model" model`,
-			`info "ASIC(s)" asicmodel`,
-			`info "Firmware" firmware`,
-			`info "Uptime" uptime`,
-			`info "Best Difficulty" bestdiff`,
-			`info "Shares" shares`,
-			`info "Pool" pool`,
-			`info "Hashrate" hashrate`,
-			`info "Efficiency" efficiency`,
-			`info "Heap" heap`,
-			``,
-			`prin circlejerking into open source`,
-			``,
-		}, "\n"),
-		Theme:       "family",
-		BoldTitles:  true,
-		Separator:   ":",
-		Underline:   "-",
-		Icon:        "model",
-		IconSpacing: 3,
-	},
-	ColorTheme: types.ColorTheme{
-		Title:     "green",
-		At:        "green",
-		Underline: "white",
-		Subtitle:  "white",
-		Separator: "white",
-		Info:      "white",
-	},
-	Title: types.Title{
-		Workername: true,
-		Hostname:   true,
-	},
-	Model: types.Model{
-		Boardversion: true,
-		Family:       true,
-		Vendor:       false,
-	},
-	Asicmodel: types.Asicmodel{
-		Asiccount:      true,
-		Smallcorecount: true,
-	},
-	Bestdiff: types.Bestdiff{
-		Ath: true,
-		Session: true,
-		Shortpaw: "off",
-	},
-	Efficiency: types.Efficiency{
-		Expected: true,
-		Actual:   true,
-		Shortpaw: "off",
-	},
-	Firmware: types.Firmware{
-		Version: true,
-	},
-	Hashrate: types.Hashrate{
-		Expected: true,
-		Actual:   true,
-		Shortpaw: "off",
-	},
-	Pool: types.Pool{
-		Port: true,
-	},
-	Shares: types.Shares{
-		Ratio:    true,
-		Shortpaw: "off",
-	},
-	Uptime: types.Uptime{
-		Format: "%dd %hh %mm %ss",
-	},
-}
 var conf types.Config /// im not passing this stupid struct around
 var testData = types.ApiInfo{
 	AsicCount:              1,
@@ -129,7 +49,7 @@ var testData = types.ApiInfo{
 }
 
 func main() {
-	if paths.MakeConfigDirTree(defaultConf) {
+	if paths.MakeConfigDirTree(types.DefaultConf) {
 		writeDefaultConfig(filepath.Join(paths.CONFIG_ROOT, "config.toml"))
 	}
 
@@ -173,7 +93,7 @@ func main() {
 				return nil
 			}
 			/// set defaults
-			deepcopy.Copy(&conf, &defaultConf)
+			deepcopy.Copy(&conf, &types.DefaultConf)
 
 			if passedConfig := ctx.String("conf"); passedConfig != "" && passedConfig != "none" {
 				loadConfig(passedConfig, &conf)
@@ -275,7 +195,6 @@ func main() {
 			} else if conf.Display.Theme != "manual" {
 				return cli.Exit(fmt.Sprintf("unknown theme %q", conf.Display.Theme), 1)
 			}
-
 			/// print
 			info := processFormat(conf.Display.Format, axeInfo)
 			fmt.Println(strings.Join(stitchIconAndInfo(icon, info, conf.Display.IconSpacing), "\n"))
@@ -305,7 +224,9 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 		}
 	}
 	for i := range icon {
-		res = append(res, fmt.Sprintf("%s%s%s", colors.ProcessTags(icon[i]), strings.Repeat(" ", spacing), colors.ProcessTags(info[i])))
+		res = append(res, fmt.Sprintf("%s%s%s",
+			colors.ProcessTags(colors.TagString(icon[i], conf.ColorTheme.Icon)),
+			strings.Repeat(" ", spacing), colors.ProcessTags(info[i])))
 	}
 	return res
 }
@@ -402,7 +323,7 @@ func loadConfig(path string, conf *types.Config) {
 	}
 }
 func writeDefaultConfig(path string) error {
-	conf, _ := toml.Marshal(defaultConf)
+	conf, _ := toml.Marshal(types.DefaultConf)
 	if err := os.WriteFile(path, conf, 0755); err != nil {
 		return cli.Exit(fmt.Sprintf("couldnt create config file: %s", err), 1)
 	}

@@ -11,6 +11,7 @@ func SearchAndLoadIcon(name string) []string {
 	if icon == nil {
 		/// search
 		/// MAYBE: does merging the maps result in better perf? doubtful
+		/// its also just easier to keep em separate, see models.go
 		/// ordered by most to least used
 		for _, m := range append([]map[string][]string{}, Models, ModelFamilies, Asics, Vendors, Misc) {
 			var ok bool

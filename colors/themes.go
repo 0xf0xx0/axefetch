@@ -15,6 +15,7 @@ var Themes = map[string]types.ColorTheme{
 		Subtitle:  "greenbright",
 		Separator: "blackbright",
 		Info:      "green",
+		Icon:      "green",
 	},
 	"supra": {
 		Title:     "blue",
@@ -23,6 +24,7 @@ var Themes = map[string]types.ColorTheme{
 		Subtitle:  "blue",
 		Separator: "white",
 		Info:      "cyan",
+		Icon:      "cyan",
 	},
 	"ultra": {
 		Title:     "magenta",
@@ -31,6 +33,7 @@ var Themes = map[string]types.ColorTheme{
 		Subtitle:  "magenta",
 		Separator: "blackbright",
 		Info:      "blue",
+		Icon:      "blue",
 	},
 	"max": {
 		Title:     "redbright",
@@ -39,6 +42,7 @@ var Themes = map[string]types.ColorTheme{
 		Subtitle:  "redbright",
 		Separator: "white",
 		Info:      "red",
+		Icon:      "red",
 	},
 
 	"0xf0xx0": {
@@ -48,5 +52,6 @@ var Themes = map[string]types.ColorTheme{
 		Subtitle:  "#768b55",
 		Separator: "#5f5a4c",
 		Info:      "#acb7b4",
+		Icon:      "#5f5a4c",
 	},
 }
