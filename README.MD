@@ -2,16 +2,19 @@
 
 neofetch but for [*axes](https://bitaxe.org)
 ```
-    <" .    . ^<    test-miner@bitaxe
+    <" .    . ^<   test-miner@bitaxe
   [w@kI      Ik@q[   -----------------
- X$$$$W+    ~M$$$$Y   Model: 601
+ X$$$$W+    ~M$$$$Y   Model: Gamma 601
 c$$$$$$%:``,%$$$$$$X   ASIC(s): 1x BM1370
 W&8888W[C8%L]W8888&&   Firmware: ESP-Miner v2.8.0
-""""""" z**X """""""   Uptime: 133h50m24s
+""""""" z**X """""""   Uptime: 5d 13h 50m 24s
        'xXXn`          Best Difficulty: 21M session, 210M best
       ,p$$$$d,         Shares: 881 accepted, 423 rejected (48.01%)
-     +W$$$$$$W_        circlejerking into open source
-     /q*B$$B*qt
+     +W$$$$$$W_        Pool: not-so-public-pool.io:3373
+     /q*B$$B*qt        Hashrate: 1.42 TH/s (actual), 1 TH/s (expected)
+                       Efficiency: 14.08 J/TH (actual), 14.08 J/TH (expected)
+                       Heap: 8 MiB
+                       circlejerking into open source
 ```
 
 # install
