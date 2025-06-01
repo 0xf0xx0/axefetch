@@ -7,7 +7,7 @@ import (
 )
 
 // TODO: icons for each model and family
-var Models = map[string][]string{
+var Models = map[string]string{
 	"102": ModelFamilies["max"],
 
 	"201": ModelFamilies["ultra"],
@@ -25,9 +25,9 @@ var Models = map[string][]string{
 	"601": ModelFamilies["gamma"],
 	"602": ModelFamilies["gamma"],
 }
-var ModelFamilies = map[string][]string{
-	"gamma": loadIcon(filepath.Join(paths.MODEL_ROOT, "gamma.txt")),
-	"max":   loadIcon(filepath.Join(paths.MODEL_ROOT, "max.txt")),
-	"supra": loadIcon(filepath.Join(paths.MODEL_ROOT, "supra.txt")),
-	"ultra": loadIcon(filepath.Join(paths.MODEL_ROOT, "ultra.txt")),
+var ModelFamilies = map[string]string{
+	"gamma": filepath.Join(paths.MODEL_ROOT, "gamma.txt"),
+	"max":   filepath.Join(paths.MODEL_ROOT, "max.txt"),
+	"supra": filepath.Join(paths.MODEL_ROOT, "supra.txt"),
+	"ultra": filepath.Join(paths.MODEL_ROOT, "ultra.txt"),
 }

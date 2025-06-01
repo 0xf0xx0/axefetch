@@ -13,12 +13,13 @@ func SearchAndLoadIcon(name string) []string {
 		/// MAYBE: does merging the maps result in better perf? doubtful
 		/// its also just easier to keep em separate, see models.go
 		/// ordered by most to least used
-		for _, m := range append([]map[string][]string{}, Models, ModelFamilies, Asics, Vendors, Misc) {
+		for _, m := range append([]map[string]string{}, Models, ModelFamilies, Asics, Vendors, Misc) {
 			var ok bool
-			icon, ok = m[name]
+			name, ok = m[name]
 			if !ok {
 				continue
 			}
+			icon = loadIcon(name)
 			return icon
 		}
 	}
@@ -32,6 +33,7 @@ func loadIcon(path string) []string {
 		//println(err.Error()) /// TODO: what to do with this error...
 		return nil
 	}
+	println("loaded", path)
 	/// trim trailing newlines, used for padding the info string when the icon is shorter
 	return strings.Split(strings.Trim(string(contents), "\n"), "\n")
 }

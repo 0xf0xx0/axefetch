@@ -6,7 +6,7 @@ import (
 	"github.com/0xf0xx0/axefetch/paths"
 )
 
-var Misc = map[string][]string{
-	"bitcoin": loadIcon(filepath.Join(paths.MISC_ROOT, "bitcoin.txt")),
-	"osmu": loadIcon(filepath.Join(paths.MISC_ROOT, "osmu.txt")),
+var Misc = map[string]string{
+	"bitcoin": filepath.Join(paths.MISC_ROOT, "bitcoin.txt"),
+	"osmu": filepath.Join(paths.MISC_ROOT, "osmu.txt"),
 }

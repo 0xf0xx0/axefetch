@@ -155,13 +155,13 @@ func main() {
 			case "model":
 				{
 					conf.Display.Icon = axeInfo.BoardVersion
-					icon = icons.Models[conf.Display.Icon]
+					icon = icons.SearchAndLoadIcon(icons.Models[conf.Display.Icon])
 					break
 				}
 			case "asic":
 				{
 					conf.Display.Icon = axeInfo.AsicModel
-					icon = icons.Asics[conf.Display.Icon]
+					icon = icons.SearchAndLoadIcon(icons.Asics[conf.Display.Icon])
 					break
 				}
 			case "none":
@@ -207,7 +207,6 @@ func main() {
 }
 
 func stitchIconAndInfo(icon, info []string, spacing int) []string {
-	res := []string{}
 	iconLen := len(icon)
 	infoLen := len(info)
 	if iconLen < infoLen {
@@ -224,11 +223,11 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 		}
 	}
 	for i := range icon {
-		res = append(res, fmt.Sprintf("%s%s%s",
+		icon[i] = fmt.Sprintf("%s%s%s",
 			colors.ProcessTags(colors.TagString(icon[i], conf.ColorTheme.Icon)),
-			strings.Repeat(" ", spacing), colors.ProcessTags(info[i])))
+			strings.Repeat(" ", spacing), colors.ProcessTags(info[i]))
 	}
-	return res
+	return icon
 }
 
 // processes the display format string and returns a slice of the (valid) lines
