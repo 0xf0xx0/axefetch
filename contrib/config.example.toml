@@ -26,8 +26,8 @@ prin circlejerking into open source
 """
 # Selected icon name or path
 # Default: 'model'
-# Values: 'none', 'vendor', 'family', 'model', path to ascii art in a plaintext file
-icon = 'model'
+# Values: 'none', 'vendor', 'family', or path to ascii art in a plaintext file
+icon = 'family'
 # Spaces between the icon and the info
 icon_spacing = 3
 # Default: 'family'

@@ -151,32 +151,20 @@ func main() {
 				println("unimplemented, waiting for efuse")
 				fallthrough
 			case "family":
-				fallthrough
-			case "model":
 				{
-					conf.Display.Icon = axeInfo.BoardVersion
-					icon = icons.SearchAndLoadIcon(icons.Models[conf.Display.Icon])
-					break
+					conf.Display.Icon = strings.ToLower(axeInfo.BoardFamily)
 				}
 			case "asic":
 				{
 					conf.Display.Icon = axeInfo.AsicModel
-					icon = icons.SearchAndLoadIcon(icons.Asics[conf.Display.Icon])
-					break
 				}
 			case "none":
 				{
 					icon = []string{""}
 					conf.Display.IconSpacing = 0
 				}
-			default:
-				{
-					icon = icons.SearchAndLoadIcon(conf.Display.Icon)
-				}
 			}
-			if icon == nil {
-				return cli.Exit(fmt.Sprintf("couldnt load icon %q, does it exist?", conf.Display.Icon), 1)
-			}
+
 			switch conf.Display.Theme {
 			case "manual":
 				{
@@ -190,10 +178,19 @@ func main() {
 				}
 				/// no default case, we assume its a theme name and do a lookup
 			}
-			if theme, ok := colors.Themes[strings.ToLower(conf.Display.Theme)]; ok {
-				conf.ColorTheme = theme
-			} else if conf.Display.Theme != "manual" {
-				return cli.Exit(fmt.Sprintf("unknown theme %q", conf.Display.Theme), 1)
+
+			if conf.Display.Icon != "none" {
+				icon = icons.SearchAndLoadIcon(conf.Display.Icon)
+				if icon == nil {
+					return cli.Exit(fmt.Sprintf("couldnt load icon %q, does it exist?", conf.Display.Icon), 1)
+				}
+			}
+			if conf.Display.Theme != "manual" {
+				if theme, ok := colors.Themes[strings.ToLower(conf.Display.Theme)]; ok {
+					conf.ColorTheme = theme
+				} else {
+					return cli.Exit(fmt.Sprintf("unknown theme %q", conf.Display.Theme), 1)
+				}
 			}
 			/// print
 			info := processFormat(conf.Display.Format, axeInfo)
@@ -201,7 +198,7 @@ func main() {
 			return nil
 		},
 	}
-	if err := app.Run(context.TODO(), os.Args); err != nil {
+	if err := app.Run(context.Background(), os.Args); err != nil {
 		println(fmt.Sprint(err))
 	}
 }

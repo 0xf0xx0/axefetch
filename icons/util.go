@@ -7,23 +7,11 @@ import (
 
 // tries to load an icon by path, and if that fails searches for it in the icon dirs
 func SearchAndLoadIcon(name string) []string {
-	icon := loadIcon(name)
-	if icon == nil {
-		/// search
-		/// MAYBE: does merging the maps result in better perf? doubtful
-		/// its also just easier to keep em separate, see models.go
-		/// ordered by most to least used
-		for _, m := range append([]map[string]string{}, Models, ModelFamilies, Asics, Vendors, Misc) {
-			var ok bool
-			name, ok = m[name]
-			if !ok {
-				continue
-			}
-			icon = loadIcon(name)
-			return icon
-		}
+	name, ok := Icons[name]
+	if !ok {
+		return loadIcon(name)
 	}
-	return icon
+	return loadIcon(name)
 }
 
 // loads an icon from a path
@@ -33,7 +21,7 @@ func loadIcon(path string) []string {
 		//println(err.Error()) /// TODO: what to do with this error...
 		return nil
 	}
-	println("loaded", path)
 	/// trim trailing newlines, used for padding the info string when the icon is shorter
+	/// Trim over TrimSpace cause TrimSpace doesnt get newlines
 	return strings.Split(strings.Trim(string(contents), "\n"), "\n")
 }
