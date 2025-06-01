@@ -55,12 +55,12 @@ type Asicmodel struct {
 type Bestdiff struct {
 	Ath      bool   `toml:"ath"`
 	Session  bool   `toml:"session"`
-	Shortpaw string `toml:"shortpaw" comment:""`
+	Shortpaw string `toml:"shortpaw" comment:"'on' or 'off'"`
 }
 type Efficiency struct {
 	Expected bool   `toml:"expected"`
 	Actual   bool   `toml:"actual"`
-	Shortpaw string `toml:"shortpaw" comment:""`
+	Shortpaw string `toml:"shortpaw" comment:"'on' or 'off'"`
 }
 type Firmware struct {
 	Version bool `toml:"version"`
@@ -68,14 +68,14 @@ type Firmware struct {
 type Hashrate struct {
 	Expected bool   `toml:"expected"`
 	Actual   bool   `toml:"actual"`
-	Shortpaw string `toml:"shortpaw" comment:""`
+	Shortpaw string `toml:"shortpaw" comment:"'on' or 'off'"`
 }
 type Pool struct {
 	Port bool `toml:"port"`
 }
 type Shares struct {
-	Shortpaw string `toml:"shortpaw" comment:""`
-	Ratio    bool   `toml:"ratio" comment:""`
+	Shortpaw string `toml:"shortpaw" comment:"'on', 'tiny' or 'off'"`
+	Ratio    bool   `toml:"ratio"`
 }
 type Uptime struct {
 	Format string `toml:"format"`

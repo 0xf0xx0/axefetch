@@ -31,11 +31,10 @@ go build
     - [ ] vendor ("GekkoScience 601") (depends on bitaxeorg/ESP-Miner/issues/716)
     - [x] model family ("Supra 401") (implemented, depends on bitaxeorg/ESP-Miner/pull/966)
 - [ ] add icons
-    - [ ] add support for no icon
     - same as info, but not dependent on pulls
 - [ ] add color themes
     - same as icons
-- [ ] add docs to config
+- [x] add docs to config
 
 bitcoin icon from https://bitcoinicons.com  
 gamma icon from https://svgsilh.com/image/309911.html

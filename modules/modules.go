@@ -92,6 +92,7 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 	"hashrate": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
+		/// TODO: add "tiny" display
 		shortpawed := conf.Hashrate.Shortpaw == "on"
 		if conf.Hashrate.Actual {
 			unit := "GH"
