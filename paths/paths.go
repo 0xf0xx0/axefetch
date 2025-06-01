@@ -23,13 +23,6 @@ var PATHS = []string{
 	MODEL_ROOT,
 	VENDOR_ROOT,
 }
-var ICON_PATHS = []string{
-	ICON_ROOT,
-	ASIC_ROOT,
-	MISC_ROOT,
-	MODEL_ROOT,
-	VENDOR_ROOT,
-}
 
 func getConfigDir() string {
 	userConfigDir, err := os.UserConfigDir()
@@ -42,9 +35,9 @@ func getConfigDir() string {
 
 func MakeConfigDirTree(defaultConf types.Config) bool {
 	if _, err := os.Stat(CONFIG_ROOT); err != nil {
-		mkdirIfNotExist(VENDOR_ROOT, 0755)
-		mkdirIfNotExist(ASIC_ROOT, 0755)
-		mkdirIfNotExist(MODEL_ROOT, 0755)
+		for _, path := range PATHS {
+			mkdirIfNotExist(path, 0755)
+		}
 		return true
 	}
 	return false

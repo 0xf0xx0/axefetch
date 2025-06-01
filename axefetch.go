@@ -15,6 +15,7 @@ import (
 	"github.com/0xf0xx0/axefetch/modules"
 	"github.com/0xf0xx0/axefetch/paths"
 	"github.com/0xf0xx0/axefetch/types"
+	"github.com/fatih/color"
 	"github.com/tiendc/go-deepcopy"
 
 	"github.com/go-andiamo/splitter"
@@ -63,7 +64,7 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "conf",
-				Usage: "config file `path`",
+				Usage: "config file `path` (or 'none')",
 				Value: filepath.Join(paths.CONFIG_ROOT, "config.toml"),
 			},
 			&cli.StringFlag{
@@ -72,11 +73,15 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:  "icon",
-				Usage: "ascii icon to use (name, path, or 'none')",
+				Usage: "ascii icon to use (`name`, path, or 'none')",
 			},
 			&cli.StringFlag{
 				Name:  "theme",
 				Usage: "color `theme` (name, 'manual')",
+			},
+			&cli.BoolFlag{
+				Name:  "force-color",
+				Usage: "force color output",
 			},
 			&cli.BoolFlag{
 				Name:   "testing",
@@ -91,6 +96,9 @@ func main() {
 			if path := ctx.String("createdefaultconfig"); path != "" {
 				writeDefaultConfig(path)
 				return nil
+			}
+			if ctx.Bool("force-color") {
+				color.NoColor = false
 			}
 			/// set defaults
 			deepcopy.Copy(&conf, &types.DefaultConf)
@@ -203,6 +211,7 @@ func main() {
 	}
 }
 
+// merges icon and info slices and processes tags
 func stitchIconAndInfo(icon, info []string, spacing int) []string {
 	iconLen := len(icon)
 	infoLen := len(info)
