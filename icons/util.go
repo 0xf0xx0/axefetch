@@ -6,16 +6,15 @@ import (
 )
 
 // tries to load an icon by path, and if that fails searches for it in the icon dirs
-func SearchAndLoadIcon(name string) []string {
-	name, ok := Icons[name]
+func SearchAndLoadIcon(uri string) []string {
+	path, ok := Icons[uri]
 	if !ok {
-		return loadIcon(name)
+		return loadIconFromPath(uri)
 	}
-	return loadIcon(name)
+	return loadIconFromPath(path)
 }
 
-// loads an icon from a path
-func loadIcon(path string) []string {
+func loadIconFromPath(path string) []string {
 	contents, err := os.ReadFile(path)
 	if err != nil {
 		//println(err.Error()) /// TODO: what to do with this error...

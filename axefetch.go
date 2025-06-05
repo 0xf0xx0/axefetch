@@ -31,6 +31,7 @@ var testData = types.ApiInfo{
 	BestSessionDiff:        "21M",
 	BoardFamily:            "Gamma",
 	BoardVersion:           "601",
+	BoardVendor:            "Fluffy Inc.",
 	StratumURL:             "not-so-public-pool.io",
 	StratumPort:            3373,
 	StratumUser:            "bc1qtesting.test-miner",
@@ -190,14 +191,15 @@ func main() {
 			if conf.Display.Icon != "none" {
 				icon = icons.SearchAndLoadIcon(conf.Display.Icon)
 				if icon == nil {
-					return cli.Exit(fmt.Sprintf("couldnt load icon %q, does it exist?", conf.Display.Icon), 1)
+					icon = []string{""} /// just print no icon
+					println(fmt.Sprintf("couldnt load icon %q, does it exist?", conf.Display.Icon))
 				}
 			}
 			if conf.Display.Theme != "manual" {
 				if theme, ok := colors.Themes[strings.ToLower(conf.Display.Theme)]; ok {
 					conf.ColorTheme = theme
 				} else {
-					return cli.Exit(fmt.Sprintf("unknown theme %q", conf.Display.Theme), 1)
+					println(fmt.Sprintf("unknown theme %q", conf.Display.Theme))
 				}
 			}
 			/// print
@@ -282,6 +284,7 @@ func processFormat(format string, data types.ApiInfo) []string {
 func info(args []string, lastline string, data types.ApiInfo) string {
 	ret := ""
 	/// two formats: 'info <func>' and 'info <subtitle> <func>'
+	/// left loose on purpose
 	switch len(args) {
 	/// <func>
 	case 1:

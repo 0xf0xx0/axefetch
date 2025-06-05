@@ -7,6 +7,7 @@ type ApiInfo struct {
 	BestSessionDiff        string  `json:"bestSessionDiff"`
 	BoardFamily            string  `json:"boardFamily"`
 	BoardVersion           string  `json:"boardVersion"`
+	BoardVendor            string  `json:"boardVendor"`
 	CoreVoltage            int     `json:"coreVoltage"`
 	CoreVoltageActual      int     `json:"coreVoltageActual"`
 	Current                float64 `json:"current"`
