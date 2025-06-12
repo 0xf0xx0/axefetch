@@ -29,7 +29,6 @@ go build
 - [?] clean + optimize code (pprof returns no samples lol)
 - [ ] more info functions
     - [ ] vendor ("GekkoScience 601") (depends on bitaxeorg/ESP-Miner/issues/716)
-    - [x] model family ("Supra 401") (implemented, depends on bitaxeorg/ESP-Miner/pull/966)
 - [ ] add icons
     - same as info, but not dependent on pulls
 - [ ] add color themes

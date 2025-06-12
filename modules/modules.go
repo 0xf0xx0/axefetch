@@ -105,12 +105,12 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		}
 		if conf.Hashrate.Expected {
 			unit := "GH"
-			expected := ai.ExpectedHashrate
+			expected := float32(ai.ExpectedHashrate)
 			if expected > 1000 {
 				unit = "TH"
 				expected /= 1000
 			}
-			ret = append(ret, printWithShortpaw(fmt.Sprintf("%d %s/s", expected, unit), "(expected)", shortpawed))
+			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f %s/s", expected, unit), "(expected)", shortpawed))
 		}
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
