@@ -152,13 +152,16 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	"shares": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := ""
 		switch conf.Shares.Shortpaw {
-			case "on": {
+		case "on":
+			{
 				ret = fmt.Sprintf("%d/%d", ai.SharesAccepted, ai.SharesRejected)
 			}
-			case "tiny": {
+		case "tiny":
+			{
 				ret = fmt.Sprintf("%d/%d (acc/rej)", ai.SharesAccepted, ai.SharesRejected)
 			}
-			case "off": {
+		case "off":
+			{
 				ret = fmt.Sprintf("%d accepted, %d rejected", ai.SharesAccepted, ai.SharesRejected)
 			}
 		}
@@ -166,6 +169,16 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			return fmt.Sprintf("%s (%.2f%%)", ret, float32(ai.SharesRejected)/float32(ai.SharesAccepted)*100)
 		}
 		return ret
+	},
+	"temp": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		ret := []string{}
+		if conf.Temp.Asic {
+			ret = append(ret, fmt.Sprintf("%.2fC (asic)", ai.Temp))
+		}
+		if conf.Temp.Vreg {
+			ret = append(ret, fmt.Sprintf("%.2fC (vreg)", ai.VrTemp))
+		}
+		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
 	"uptime": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		/// TODO: use date format strings?

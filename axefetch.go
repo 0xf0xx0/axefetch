@@ -48,6 +48,8 @@ var testData = types.ApiInfo{
 	ExpectedHashrate:       1420,
 	Power:                  20,
 	FreeHeap:               8 * 1024 * 1024,
+	Temp:                   55.329478,
+	VrTemp:                 66,
 }
 
 func main() {

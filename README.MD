@@ -22,6 +22,7 @@ W&8888W[C8%L]W8888&&   Firmware: ESP-Miner v2.8.0
 git clone https://github.com/0xf0xx0/axefetch.git
 cd axefetch
 go build
+cp contrib/* ~/.config/axefetch/ # copy default icons
 ./axefetch --ip <axeip>
 ```
 

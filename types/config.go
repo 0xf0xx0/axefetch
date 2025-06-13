@@ -16,6 +16,7 @@ type Config struct {
 	Hashrate   `toml:"hashrate"`
 	Pool       `toml:"pool"`
 	Shares     `toml:"shares"`
+	Temp       `toml:"temp"`
 	Uptime     `toml:"uptime"`
 }
 type General struct {
@@ -77,6 +78,11 @@ type Shares struct {
 	Shortpaw string `toml:"shortpaw" comment:"'on', 'tiny' or 'off'"`
 	Ratio    bool   `toml:"ratio"`
 }
+type Temp struct {
+	Shortpaw string `toml:"shortpaw" comment:"'on', 'tiny' or 'off'"`
+	Asic     bool   `toml:"asic"`
+	Vreg     bool   `toml:"vreg"`
+}
 type Uptime struct {
 	Format string `toml:"format"`
 }
@@ -99,6 +105,7 @@ var DefaultConf = Config{
 			`info "Pool" pool`,
 			`info "Hashrate" hashrate`,
 			`info "Efficiency" efficiency`,
+			`info "Temperature" temp`,
 			`info "Heap" heap`,
 			``,
 			`prin circlejerking into open source`,
@@ -157,6 +164,11 @@ var DefaultConf = Config{
 	Shares: Shares{
 		Ratio:    true,
 		Shortpaw: "off",
+	},
+	Temp: Temp{
+		Shortpaw: "off",
+		Asic:     true,
+		Vreg:     true,
 	},
 	Uptime: Uptime{
 		Format: "%dd %hh %mm %ss",

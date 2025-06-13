@@ -36,6 +36,6 @@ type ApiInfo struct {
 	UptimeSeconds          int     `json:"uptimeSeconds"`
 	Version                string  `json:"version"`
 	Voltage                float64 `json:"voltage"`
-	VrTemp                 int     `json:"vrTemp"`
+	VrTemp                 float64 `json:"vrTemp"`
 	WifiRSSI               int     `json:"wifiRSSI"`
 }
