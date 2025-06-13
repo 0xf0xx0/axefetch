@@ -14,24 +14,21 @@ import (
 func ProcessTags(s string) string {
 	return formatLine(s)
 }
-func hex2RGB(hex string) []uint64 {
+func hex2RGB(hex string) (int, int, int) {
 	hex = hex[1:]
-	ret := make([]uint64, 3)
-	ret[0], _ = strconv.ParseUint(hex[0:2], 16, 8)
-	ret[1], _ = strconv.ParseUint(hex[2:4], 16, 8)
-	ret[2], _ = strconv.ParseUint(hex[4:6], 16, 8)
-	return ret
+	r, _ := strconv.ParseUint(hex[0:2], 16, 8)
+	g, _ := strconv.ParseUint(hex[2:4], 16, 8)
+	b, _ := strconv.ParseUint(hex[4:6], 16, 8)
+	return int(r), int(g), int(b)
 }
 
 func format(s, col string) string {
 	if strings.HasPrefix(col, "#") {
 		/// hex code
-		rgb := hex2RGB(col)
-		return color.RGB(int(rgb[0]), int(rgb[1]), int(rgb[2])).Sprint(s)
+		return color.RGB(hex2RGB(col)).Sprint(s)
 	}
 	if strings.HasPrefix(col, "bg#") {
-		rgb := hex2RGB(col[2:])
-		return color.BgRGB(int(rgb[0]), int(rgb[1]), int(rgb[2])).Sprint(s)
+		return color.BgRGB(hex2RGB(col[2:])).Sprint(s)
 	}
 	if fn, ok := colorMap[col]; ok {
 		return fn(s)
