@@ -63,10 +63,10 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		ret := []string{}
 		shortpawed := conf.Bestdiff.Shortpaw == "on"
 		if conf.Bestdiff.Session {
-			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestSessionDiff), "short"), "session", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestSessionDiff), "binshort"), "session", shortpawed))
 		}
 		if conf.Bestdiff.Ath {
-			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestDiff), "short"), "best", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestDiff), "binshort"), "best", shortpawed))
 		}
 		if shortpawed {
 			return strings.Join(ret, "/")
@@ -194,8 +194,8 @@ func printWithShortpaw(str, shortpaw string, shouldBeShort bool) string {
 	return fmt.Sprintf("%s %s", str, shortpaw)
 }
 
-// converts 123456 into 123.45K
-func floatToShort(value float64) string {
+// converts 123456 into 123.45K and 123456789876 into 123.45 G
+func floatToBinshort(value float64) string {
 	if value >= 1e12 {
 		return fmt.Sprintf("%.5gT", value/1e9) /// Trillions
 	} else if value >= 1e9 {
@@ -242,24 +242,45 @@ func unitFormat(value float64, unit string) string {
 		{
 			return fmt.Sprintf("%.2f C", value)
 		}
+	/// wtf is this format even called?
+	case "binshort":
+		{
+			return floatToBinshort(value)
+		}
 	case "short":
 		{
-			return floatToShort(value)
+			unit = ""
+			if value > 1e12 {
+				unit = "T"
+				value /= 1e12
+			} else if value > 1e9 {
+				unit = "B"
+				value /= 1e9
+			} else if value > 1e6 {
+				unit = "M"
+				value /= 1e6
+			} else if value > 1000 {
+				unit = "k"
+				value /= 1000
+			}
+			return fmt.Sprintf("%.3g%s", value, unit)
 		}
-	case "ib": {
-		unit = "iB"
-		if value > 0x100000 {
-			unit = "MiB"
-			value /= 0x100000
-		} else if value > 1024 {
-			unit = "KiB"
-			value /= 1024
+	case "ib":
+		{
+			unit = "iB"
+			if value > 0x100000 {
+				unit = "MiB"
+				value /= 0x100000
+			} else if value > 1024 {
+				unit = "KiB"
+				value /= 1024
+			}
+			return fmt.Sprintf("%.3g %s", value, unit)
 		}
-		return fmt.Sprintf("%.3g %s", value, unit)
-	}
-	default: {
-		return ""
-	}
+	default:
+		{
+			return ""
+		}
 	}
 }
 
