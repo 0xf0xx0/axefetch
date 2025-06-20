@@ -15,11 +15,11 @@ import (
 	"axefetch/modules"
 	"axefetch/paths"
 	"axefetch/types"
-	"github.com/fatih/color"
-	"github.com/tiendc/go-deepcopy"
 
+	"github.com/fatih/color"
 	"github.com/go-andiamo/splitter"
 	"github.com/pelletier/go-toml/v2"
+	"github.com/tiendc/go-deepcopy"
 	"github.com/urfave/cli/v3"
 )
 
@@ -206,7 +206,8 @@ func main() {
 				icon = icons.SearchAndLoadIcon(conf.Display.Icon)
 				if icon == nil {
 					icon = []string{""} /// just print no icon
-					println(fmt.Sprintf("couldnt load icon %q, does it exist?", conf.Display.Icon))
+					println(fmt.Sprintf("unknown icon %q", conf.Display.Icon))
+					conf.Display.IconSpacing = 0
 				}
 			}
 			if conf.Display.Theme != "manual" {
