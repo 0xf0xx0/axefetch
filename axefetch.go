@@ -131,16 +131,17 @@ func main() {
 				}
 				statusReq, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/status", conf.General.IP))
 				if err != nil {
-					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
+					return cli.Exit(fmt.Sprintf("error getting axe status: %s", err), 1)
 				}
 				body, err := io.ReadAll(statusReq.Body)
 				if err != nil {
-					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
+					return cli.Exit(fmt.Sprintf("error reading axe status: %s", err), 1)
 				}
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
+					return cli.Exit(fmt.Sprintf("error unmarshalling axe status: %s", err), 1)
 				}
-				/// this gets unmarshalled into the same struct to fill the rest of the asic info
+
+				/// this gets unmarshalled into the same struct to fill the rest of the board info
 				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/board", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
@@ -152,16 +153,17 @@ func main() {
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
 					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
+
 				confReq, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/config", conf.General.IP))
 				if err != nil {
-					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
+					return cli.Exit(fmt.Sprintf("error getting axe config: %s", err), 1)
 				}
 				body, err = io.ReadAll(confReq.Body)
 				if err != nil {
-					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
+					return cli.Exit(fmt.Sprintf("error reading axe config: %s", err), 1)
 				}
 				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
+					return cli.Exit(fmt.Sprintf("error unmarshalling axe config: %s", err), 1)
 				}
 			} else {
 				axeInfo = testData
