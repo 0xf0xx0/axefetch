@@ -163,11 +163,12 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 	"temp": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
+		shortpawed := conf.Bestdiff.Shortpaw == "on"
 		if conf.Temp.Asic {
-			ret = append(ret, fmt.Sprintf("%s (asic)", unitFormat(ai.Temp, "c")))
+			ret = append(ret, printWithShortpaw(unitFormat(ai.Temp, "c"), "(asic)", shortpawed))
 		}
 		if conf.Temp.Vreg {
-			ret = append(ret, fmt.Sprintf("%s (vreg)", unitFormat(ai.VrTemp, "c")))
+			ret = append(ret, printWithShortpaw(unitFormat(ai.VrTemp, "c"), "(vreg)", shortpawed))
 		}
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
