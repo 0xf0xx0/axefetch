@@ -1,4 +1,4 @@
-module github.com/0xf0xx0/axefetch
+module axefetch
 
 go 1.24.3
 

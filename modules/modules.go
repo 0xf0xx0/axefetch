@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0xf0xx0/axefetch/colors"
-	"github.com/0xf0xx0/axefetch/types"
+	"axefetch/colors"
+	"axefetch/types"
 )
 
 // these spit out some nice info text

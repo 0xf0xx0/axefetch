@@ -10,11 +10,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/0xf0xx0/axefetch/colors"
-	"github.com/0xf0xx0/axefetch/icons"
-	"github.com/0xf0xx0/axefetch/modules"
-	"github.com/0xf0xx0/axefetch/paths"
-	"github.com/0xf0xx0/axefetch/types"
+	"axefetch/colors"
+	"axefetch/icons"
+	"axefetch/modules"
+	"axefetch/paths"
+	"axefetch/types"
 	"github.com/fatih/color"
 	"github.com/tiendc/go-deepcopy"
 
