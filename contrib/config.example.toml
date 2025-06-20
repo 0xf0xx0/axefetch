@@ -15,18 +15,20 @@ info \"Model\" model
 info \"ASIC(s)\" asicmodel
 info \"Firmware\" firmware
 info \"Uptime\" uptime
+info \"TBD\" tbd
 info \"Best Difficulty\" bestdiff
 info \"Shares\" shares
 info \"Pool\" pool
 info \"Hashrate\" hashrate
 info \"Efficiency\" efficiency
+info \"Temperature\" temp
 info \"Heap\" heap
 
 prin circlejerking into open source
 """
 # Selected icon name or path
-# Default: 'model'
-# Values: 'none', 'vendor', 'family', or path to ascii art in a plaintext file
+# Default: 'family'
+# Values: 'vendor', 'family', 'none', or path to ascii art in a plaintext file
 icon = 'family'
 # Spaces between the icon and the info
 icon_spacing = 3
@@ -66,11 +68,13 @@ small_core_count = true
 [bestdiff]
 ath = true
 session = true
+# 'on' or 'off'
 shortpaw = 'off'
 
 [efficiency]
 expected = true
 actual = true
+# 'on' or 'off'
 shortpaw = 'off'
 
 [firmware]
@@ -79,14 +83,22 @@ version = true
 [hashrate]
 expected = true
 actual = true
+# 'on' or 'off'
 shortpaw = 'off'
 
 [pool]
 port = true
 
 [shares]
+# 'on', 'tiny' or 'off'
 shortpaw = 'off'
 ratio = true
+
+[temp]
+# 'on', 'tiny' or 'off'
+shortpaw = 'off'
+asic = true
+vreg = true
 
 [uptime]
 format = '%dd %hh %mm %ss'

@@ -27,18 +27,18 @@ var conf types.Config /// im not passing this stupid struct around
 var testData = types.ApiInfo{
 	AsicCount:              1,
 	AsicModel:              "BM1370",
-	BestDiff:               "210M",
-	BestSessionDiff:        "21M",
+	BestDiff:               210_210_000_000,
+	BestSessionDiff:        330_730_000,
 	BoardFamily:            "Gamma",
 	BoardVersion:           "601",
 	BoardVendor:            "Fluffy Inc.",
-	StratumURL:             "not-so-public-pool.io",
-	StratumPort:            3373,
-	StratumUser:            "bc1qtesting.test-miner",
+	StratumURL:             "pooblic-pool.io",
+	StratumPort:            3333,
+	StratumUser:            "bc1qfakeaddress.bitaxuh",
 	FallbackStratumURL:     "closed-source-pool.evil",
 	FallbackStratumPort:    666,
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
-	IsUsingFallbackStratum: 0,
+	IsUsingFallbackStratum: false,
 	Hostname:               "bitaxe",
 	Version:                "v2.8.0",
 	UptimeSeconds:          481824,
@@ -127,11 +127,11 @@ func main() {
 				if conf.General.IP == "" {
 					return cli.Exit("no ip address given", 1)
 				}
-				infoReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", conf.General.IP))
+				statusReq, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/status", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
-				body, err := io.ReadAll(infoReq.Body)
+				body, err := io.ReadAll(statusReq.Body)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
 				}
@@ -139,12 +139,22 @@ func main() {
 					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
 				/// this gets unmarshalled into the same struct to fill the rest of the asic info
-				/// just board family currently
-				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", conf.General.IP))
+				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/board", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
 				body, err = io.ReadAll(asicReq.Body)
+				if err != nil {
+					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
+				}
+				if err := json.Unmarshal(body, &axeInfo); err != nil {
+					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
+				}
+				confReq, err := http.Get(fmt.Sprintf("http://%s/api/v2/system/config", conf.General.IP))
+				if err != nil {
+					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
+				}
+				body, err = io.ReadAll(confReq.Body)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
 				}
