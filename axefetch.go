@@ -37,13 +37,15 @@ var testData = types.ApiInfo{
 	StratumUser:            "bc1qfakeaddress.bitaxuh",
 	FallbackStratumURL:     "closed-source-pool.evil",
 	FallbackStratumPort:    666,
+	Frequency:              42069,
+	CoreVoltage:            42069,
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
 	IsUsingFallbackStratum: false,
 	Hostname:               "bitaxe",
 	Version:                "v2.8.0",
 	UptimeSeconds:          481824,
-	SharesAccepted:         881,
-	SharesRejected:         423,
+	SharesAccepted:         881435387204,
+	SharesRejected:         42348246530,
 	Hashrate:               1420,
 	ExpectedHashrate:       1420,
 	Power:                  20,
@@ -216,7 +218,7 @@ func main() {
 			}
 			/// print
 			info := processFormat(conf.Display.Format, axeInfo)
-			fmt.Println(strings.Join(stitchIconAndInfo(icon, info, conf.Display.IconSpacing), "\n"))
+			printIconAndInfo(icon, info, conf.Display.IconSpacing)
 			return nil
 		},
 	}
@@ -226,7 +228,7 @@ func main() {
 }
 
 // merges icon and info slices and processes tags
-func stitchIconAndInfo(icon, info []string, spacing int) []string {
+func printIconAndInfo(icon, info []string, spacing int) []string {
 	iconLen := len(icon)
 	infoLen := len(info)
 	if iconLen < infoLen {
@@ -243,9 +245,10 @@ func stitchIconAndInfo(icon, info []string, spacing int) []string {
 		}
 	}
 	for i := range icon {
-		icon[i] = fmt.Sprintf("%s%s%s",
+		trench := strings.Repeat(" ", spacing)
+		fmt.Printf("%s%s%s\n",
 			colors.ProcessTags(colors.TagString(icon[i], conf.ColorTheme.Icon)),
-			strings.Repeat(" ", spacing), colors.ProcessTags(info[i]))
+			trench, colors.ProcessTags(info[i]))
 	}
 	return icon
 }
