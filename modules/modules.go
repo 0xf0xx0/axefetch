@@ -66,7 +66,7 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestSessionDiff), "short"), "session", shortpawed))
 		}
 		if conf.Bestdiff.Ath {
-			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestSessionDiff), "short"), "best", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestDiff), "short"), "best", shortpawed))
 		}
 		if shortpawed {
 			return strings.Join(ret, "/")
