@@ -47,6 +47,9 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 
 	/// normal functions
+	"tbd": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		return fmt.Sprintf("%s@%s", unitFormat(ai.Frequency, "mhz"), unitFormat(float64(ai.CoreVoltage), "mv"))
+	},
 	"asicmodel": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
 		/// this gets prepended
@@ -75,11 +78,11 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		shortpawed := conf.Efficiency.Shortpaw == "on"
 		if conf.Hashrate.Actual {
 			actualEff := ai.Power / (ai.Hashrate / 1000)
-			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f J/TH", actualEff), "(actual)", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(actualEff, "j/th"), "(actual)", shortpawed))
 		}
 		if conf.Hashrate.Expected {
-			expectedEff := ai.Power / (float64(ai.ExpectedHashrate) / 1000)
-			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f J/TH", expectedEff), "(expected)", shortpawed))
+			expectedEff := ai.Power / (ai.ExpectedHashrate / 1000)
+			ret = append(ret, printWithShortpaw(unitFormat(expectedEff, "j/th"), "(expected)", shortpawed))
 		}
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
@@ -95,29 +98,15 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		/// TODO: add "tiny" display
 		shortpawed := conf.Hashrate.Shortpaw == "on"
 		if conf.Hashrate.Actual {
-			unit := "GH"
-			hashrate := ai.Hashrate
-			if hashrate > 1000 {
-				unit = "TH"
-				hashrate /= 1000
-			}
-			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f %s/s", hashrate, unit), "(actual)", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(ai.Hashrate, "gh/s"), "(actual)", shortpawed))
 		}
 		if conf.Hashrate.Expected {
-			unit := "GH"
-			expected := float32(ai.ExpectedHashrate)
-			if expected > 1000 {
-				unit = "TH"
-				expected /= 1000
-			}
-			ret = append(ret, printWithShortpaw(fmt.Sprintf("%.2f %s/s", expected, unit), "(expected)", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(ai.ExpectedHashrate, "gh/s"), "(expected)", shortpawed))
 		}
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
 	"heap": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		/// MAYBE: use a unit format module?
-		mib := float32(ai.FreeHeap) / (1024 * 1024)
-		return fmt.Sprintf("%.2g MiB", mib)
+		return unitFormat(float64(ai.FreeHeap), "ib")
 	},
 	"model": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
@@ -151,18 +140,20 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 	"shares": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := ""
+		accepted := unitFormat(float64(ai.SharesAccepted), "short")
+		rejected := unitFormat(float64(ai.SharesRejected), "short")
 		switch conf.Shares.Shortpaw {
 		case "on":
 			{
-				ret = fmt.Sprintf("%d/%d", ai.SharesAccepted, ai.SharesRejected)
+				ret = fmt.Sprintf("%s/%s", accepted, rejected)
 			}
 		case "tiny":
 			{
-				ret = fmt.Sprintf("%d/%d (acc/rej)", ai.SharesAccepted, ai.SharesRejected)
+				ret = fmt.Sprintf("%s/%s (acc/rej)", accepted, rejected)
 			}
 		case "off":
 			{
-				ret = fmt.Sprintf("%d accepted, %d rejected", ai.SharesAccepted, ai.SharesRejected)
+				ret = fmt.Sprintf("%s accepted, %s rejected", accepted, rejected)
 			}
 		}
 		if conf.Shares.Ratio {
@@ -172,11 +163,12 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 	"temp": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
+		shortpawed := conf.Bestdiff.Shortpaw == "on"
 		if conf.Temp.Asic {
-			ret = append(ret, fmt.Sprintf("%.2fC (asic)", ai.Temp))
+			ret = append(ret, printWithShortpaw(unitFormat(ai.Temp, "c"), "(asic)", shortpawed))
 		}
 		if conf.Temp.Vreg {
-			ret = append(ret, fmt.Sprintf("%.2fC (vreg)", ai.VrTemp))
+			ret = append(ret, printWithShortpaw(unitFormat(ai.VrTemp, "c"), "(vreg)", shortpawed))
 		}
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
@@ -201,6 +193,75 @@ func printWithShortpaw(str, shortpaw string, shouldBeShort bool) string {
 		return str
 	}
 	return fmt.Sprintf("%s %s", str, shortpaw)
+}
+
+// converts 123456 into 123.45K
+func floatToShort(value float64) string {
+	if value >= 1e12 {
+		return fmt.Sprintf("%.5gT", value/1e9) /// Trillions
+	} else if value >= 1e9 {
+		return fmt.Sprintf("%.5gG", value/1e9) /// Billions
+	} else if value >= 1e6 {
+		return fmt.Sprintf("%.5gM", value/1e6) /// Millions
+	} else if value >= 1e3 {
+		return fmt.Sprintf("%.5gK", value/1e3) /// Thousands
+	}
+	return fmt.Sprintf("%.5g", value) /// Less than a thousand
+}
+
+// units: gh/s, j/th, mhz, mv, c, ib, short
+func unitFormat(value float64, unit string) string {
+	switch unit {
+	case "gh/s":
+		{
+			unit = "GH"
+			if value > 1000 {
+				unit = "TH"
+				value /= 1000
+			}
+			return fmt.Sprintf("%.2f %s/s", value, unit)
+		}
+	case "j/th":
+		{
+			/// expected to be precalced
+			return fmt.Sprintf("%.3g J/TH", value)
+		}
+	case "mhz":
+		{
+			unit = "mHz"
+			if value > 1000 {
+				unit = "GHz"
+				value /= 1000
+			}
+			return fmt.Sprintf("%.5g %s", value, unit)
+		}
+	case "mv":
+		{
+			return fmt.Sprintf("%g mV", value)
+		}
+	case "c":
+		{
+			return fmt.Sprintf("%.2f C", value)
+		}
+	case "short":
+		{
+			return floatToShort(value)
+		}
+	case "ib": {
+		unit = "iB"
+		if value > 0x100000 {
+			unit = "MiB"
+			value /= 0x100000
+		} else if value > 1024 {
+			unit = "KiB"
+			value /= 1024
+		}
+		return fmt.Sprintf("%.3g %s", value, unit)
+	}
+	default: {
+		return ""
+	}
+	}
 }
 
 // tries to get the worker name from the username string ('address.worker'),

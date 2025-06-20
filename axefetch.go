@@ -27,23 +27,25 @@ var conf types.Config /// im not passing this stupid struct around
 var testData = types.ApiInfo{
 	AsicCount:              1,
 	AsicModel:              "BM1370",
-	BestDiff:               "210M",
-	BestSessionDiff:        "21M",
+	BestDiff:               "210G",
+	BestSessionDiff:        "330.73M",
 	BoardFamily:            "Gamma",
 	BoardVersion:           "601",
 	BoardVendor:            "Fluffy Inc.",
-	StratumURL:             "not-so-public-pool.io",
-	StratumPort:            3373,
-	StratumUser:            "bc1qtesting.test-miner",
+	StratumURL:             "pooblic-pool.io",
+	StratumPort:            3333,
+	StratumUser:            "bc1qfakeaddress.bitaxuh",
 	FallbackStratumURL:     "closed-source-pool.evil",
 	FallbackStratumPort:    666,
+	Frequency:              42069,
+	CoreVoltage:            42069,
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
 	IsUsingFallbackStratum: 0,
 	Hostname:               "bitaxe",
 	Version:                "v2.8.0",
 	UptimeSeconds:          481824,
-	SharesAccepted:         881,
-	SharesRejected:         423,
+	SharesAccepted:         881_435_387_204,
+	SharesRejected:         423_482_465,
 	Hashrate:               1420,
 	ExpectedHashrate:       1420,
 	Power:                  20,
@@ -127,11 +129,11 @@ func main() {
 				if conf.General.IP == "" {
 					return cli.Exit("no ip address given", 1)
 				}
-				infoReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", conf.General.IP))
+				statusReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
 				}
-				body, err := io.ReadAll(infoReq.Body)
+				body, err := io.ReadAll(statusReq.Body)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
 				}
@@ -139,7 +141,6 @@ func main() {
 					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
 				/// this gets unmarshalled into the same struct to fill the rest of the asic info
-				/// just board family currently
 				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", conf.General.IP))
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)

@@ -100,6 +100,7 @@ var DefaultConf = Config{
 			`info "ASIC(s)" asicmodel`,
 			`info "Firmware" firmware`,
 			`info "Uptime" uptime`,
+			`info "TBD" tbd`,
 			`info "Best Difficulty" bestdiff`,
 			`info "Shares" shares`,
 			`info "Pool" pool`,
