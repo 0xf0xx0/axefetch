@@ -3,7 +3,7 @@ package icons
 import (
 	"path/filepath"
 
-	"github.com/0xf0xx0/axefetch/paths"
+	"axefetch/paths"
 )
 
 // TODO: icons

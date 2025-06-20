@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/0xf0xx0/axefetch/types"
+	"axefetch/types"
 )
 
 // because i cant inject...

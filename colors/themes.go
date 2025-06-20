@@ -1,6 +1,6 @@
 package colors
 
-import "github.com/0xf0xx0/axefetch/types"
+import "axefetch/types"
 
 // TODO
 // vendor color themes
