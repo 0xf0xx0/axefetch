@@ -18,7 +18,7 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		ret := make([]string, 0, 2)
 		if conf.Title.Workername {
 			workername := ""
-			if ai.IsUsingFallbackStratum == 1 {
+			if ai.IsUsingFallbackStratum {
 				workername = getWorkerFromUser(ai.FallbackStratumUser)
 			} else {
 				workername = getWorkerFromUser(ai.StratumUser)
@@ -63,10 +63,10 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		ret := []string{}
 		shortpawed := conf.Bestdiff.Shortpaw == "on"
 		if conf.Bestdiff.Session {
-			ret = append(ret, printWithShortpaw(ai.BestSessionDiff, "session", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestSessionDiff), "binshort"), "session", shortpawed))
 		}
 		if conf.Bestdiff.Ath {
-			ret = append(ret, printWithShortpaw(ai.BestDiff, "best", shortpawed))
+			ret = append(ret, printWithShortpaw(unitFormat(float64(ai.BestDiff), "binshort"), "best", shortpawed))
 		}
 		if shortpawed {
 			return strings.Join(ret, "/")
@@ -125,12 +125,12 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	"pool": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := ai.StratumURL
 		port := ""
-		if ai.IsUsingFallbackStratum == 1 {
+		if ai.IsUsingFallbackStratum {
 			ret = ai.FallbackStratumURL
 		}
 		if conf.Pool.Port {
 			port = ":"
-			if ai.IsUsingFallbackStratum == 1 {
+			if ai.IsUsingFallbackStratum {
 				port += strconv.FormatInt(int64(ai.FallbackStratumPort), 10)
 			} else {
 				port += strconv.FormatInt(int64(ai.StratumPort), 10)

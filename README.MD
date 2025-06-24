@@ -2,8 +2,8 @@
 
 neofetch but for [*axes](https://bitaxe.org)
 ```
-    <" .    . ^<   test-miner@bitaxe
-  [w@kI      Ik@q[   -----------------
+    <" .    . ^<   bitaxuh@bitaxe
+  [w@kI      Ik@q[   --------------
  X$$$$W+    ~M$$$$Y   Model: Gamma 601
 c$$$$$$%:``,%$$$$$$X   ASIC(s): 1x BM1370
 W&8888W[C8%L]W8888&&   Firmware: ESP-Miner v2.8.0

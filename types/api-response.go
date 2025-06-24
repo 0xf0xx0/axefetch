@@ -3,8 +3,8 @@ package types
 type ApiInfo struct {
 	AsicCount              uint8   `json:"asicCount"`
 	AsicModel              string  `json:"asicModel"`
-	BestDiff               string  `json:"bestDiff"`
-	BestSessionDiff        string  `json:"bestSessionDiff"`
+	BestDiff               uint64  `json:"bestDiff"`
+	BestSessionDiff        uint64  `json:"bestSessionDiff"`
 	BoardFamily            string  `json:"boardFamily"`
 	BoardVersion           string  `json:"boardVersion"`
 	BoardVendor            string  `json:"boardVendor"`
@@ -21,7 +21,7 @@ type ApiInfo struct {
 	Hashrate               float64 `json:"hashrate"`
 	Hostname               string  `json:"hostname"`
 	IdfVersion             string  `json:"idfVersion"`
-	IsUsingFallbackStratum uint8    `json:"isUsingFallbackStratum"`
+	IsUsingFallbackStratum bool    `json:"isUsingFallbackStratum"`
 	MaxPower               uint8   `json:"maxPower"`
 	NominalVoltage         uint    `json:"nominalVoltage"`
 	Power                  float64 `json:"power"`

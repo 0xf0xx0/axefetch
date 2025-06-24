@@ -27,8 +27,8 @@ var conf types.Config /// im not passing this stupid struct around
 var testData = types.ApiInfo{
 	AsicCount:              1,
 	AsicModel:              "BM1370",
-	BestDiff:               "210G",
-	BestSessionDiff:        "330.73M",
+	BestDiff:               210_210_000_000,
+	BestSessionDiff:        330_730_000,
 	BoardFamily:            "Gamma",
 	BoardVersion:           "601",
 	BoardVendor:            "Fluffy Inc.",
@@ -40,7 +40,7 @@ var testData = types.ApiInfo{
 	Frequency:              42069,
 	CoreVoltage:            42069,
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
-	IsUsingFallbackStratum: 0,
+	IsUsingFallbackStratum: false,
 	Hostname:               "bitaxe",
 	Version:                "v2.8.0",
 	UptimeSeconds:          481824,
@@ -129,15 +129,20 @@ func main() {
 				if conf.General.IP == "" {
 					return cli.Exit("no ip address given", 1)
 				}
-				err := reqAPI("system/info", conf.General.IP, &axeInfo)
+				err := reqAPI("system/status", conf.General.IP, &axeInfo)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe status: %s", err), 1)
 				}
 
 				/// this gets unmarshalled into the same struct to fill the rest of the board info
-				err = reqAPI("system/asic", conf.General.IP, &axeInfo)
+				err = reqAPI("system/board", conf.General.IP, &axeInfo)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
+				}
+
+				err = reqAPI("system/config", conf.General.IP, &axeInfo)
+				if err != nil {
+					return cli.Exit(fmt.Sprintf("error getting axe config: %s", err), 1)
 				}
 			} else {
 				axeInfo = testData
@@ -331,7 +336,7 @@ func writeDefaultConfig(path string) error {
 
 // just http.Get but errors on non 200 response and wraps up the root path
 func reqAPI(endpoint, ip string, unmarshalInto any) error {
-	req, err := http.Get(fmt.Sprintf("http://%s/api/%s", ip, endpoint))
+	req, err := http.Get(fmt.Sprintf("http://%s/api/v2/%s", ip, endpoint))
 	if err != nil {
 		return err
 	}
