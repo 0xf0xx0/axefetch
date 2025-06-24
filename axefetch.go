@@ -129,28 +129,15 @@ func main() {
 				if conf.General.IP == "" {
 					return cli.Exit("no ip address given", 1)
 				}
-				statusReq, err := http.Get(fmt.Sprintf("http://%s/api/system/info", conf.General.IP))
+				err := reqAPI("system/info", conf.General.IP, &axeInfo)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe status: %s", err), 1)
 				}
-				body, err := io.ReadAll(statusReq.Body)
-				if err != nil {
-					return cli.Exit(fmt.Sprintf("error reading axe status: %s", err), 1)
-				}
-				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					return cli.Exit(fmt.Sprintf("error unmarshalling axe status: %s", err), 1)
-				}
-				/// this gets unmarshalled into the same struct to fill the rest of the asic info
-				asicReq, err := http.Get(fmt.Sprintf("http://%s/api/system/asic", conf.General.IP))
+
+				/// this gets unmarshalled into the same struct to fill the rest of the board info
+				err = reqAPI("system/asic", conf.General.IP, &axeInfo)
 				if err != nil {
 					return cli.Exit(fmt.Sprintf("error getting axe info: %s", err), 1)
-				}
-				body, err = io.ReadAll(asicReq.Body)
-				if err != nil {
-					return cli.Exit(fmt.Sprintf("error reading axe info: %s", err), 1)
-				}
-				if err := json.Unmarshal(body, &axeInfo); err != nil {
-					return cli.Exit(fmt.Sprintf("error unmarshalling axe info: %s", err), 1)
 				}
 			} else {
 				axeInfo = testData
@@ -218,7 +205,7 @@ func main() {
 }
 
 // merges icon and info slices and processes tags
-func printIconAndInfo(icon, info []string, spacing int) []string {
+func printIconAndInfo(icon, info []string, spacing int) {
 	iconLen := len(icon)
 	infoLen := len(info)
 	if iconLen < infoLen {
@@ -240,7 +227,6 @@ func printIconAndInfo(icon, info []string, spacing int) []string {
 			colors.ProcessTags(colors.TagString(icon[i], conf.ColorTheme.Icon)),
 			trench, colors.ProcessTags(info[i]))
 	}
-	return icon
 }
 
 // processes the display format string and returns a slice of the (valid) lines
@@ -339,6 +325,25 @@ func writeDefaultConfig(path string) error {
 	conf, _ := toml.Marshal(types.DefaultConf)
 	if err := os.WriteFile(path, conf, 0755); err != nil {
 		return cli.Exit(fmt.Sprintf("couldnt create config file: %s", err), 1)
+	}
+	return nil
+}
+
+// just http.Get but errors on non 200 response and wraps up the root path
+func reqAPI(endpoint, ip string, unmarshalInto any) error {
+	req, err := http.Get(fmt.Sprintf("http://%s/api/%s", ip, endpoint))
+	if err != nil {
+		return err
+	}
+	if req.StatusCode != http.StatusOK {
+		return fmt.Errorf("%s", req.Status)
+	}
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(body, unmarshalInto); err != nil {
+		return err
 	}
 	return nil
 }
