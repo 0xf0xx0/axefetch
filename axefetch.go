@@ -30,7 +30,7 @@ var testData = types.ApiInfo{
 	BestDiff:               "210G",
 	BestSessionDiff:        "330.73M",
 	BoardFamily:            "Gamma",
-	BoardVersion:           "601",
+	BoardVersion:           "621",
 	BoardVendor:            "Fluffy Inc.",
 	StratumURL:             "pooblic-pool.io",
 	StratumPort:            3333,

@@ -87,7 +87,7 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
 	"firmware": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		ret := []string{"ESP-Miner"}
+		ret := []string{}
 		if conf.Firmware.Version {
 			ret = append(ret, ai.Version)
 		}
