@@ -1,4 +1,4 @@
-package colors
+package icons
 
 import "axefetch/types"
 

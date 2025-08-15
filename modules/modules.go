@@ -7,8 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"axefetch/colors"
 	"axefetch/types"
+
+	"github.com/0xf0xx0/oigiki"
 )
 
 // these spit out some nice info text
@@ -23,27 +24,27 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			} else {
 				workername = getWorkerFromUser(ai.StratumUser)
 			}
-			workername = colors.TagString(workername, conf.ColorTheme.Title)
+			workername = oigiki.TagString(workername, conf.ColorTheme.Title)
 			if conf.Display.BoldTitles {
-				workername = colors.TagString(workername, "bold")
+				workername = oigiki.TagString(workername, "bold")
 			}
 			ret = append(ret, workername)
 		}
 		if conf.Title.Hostname {
-			hostname := colors.TagString(ai.Hostname, conf.ColorTheme.Title)
+			hostname := oigiki.TagString(ai.Hostname, conf.ColorTheme.Title)
 			if conf.Display.BoldTitles {
-				hostname = colors.TagString(hostname, "bold")
+				hostname = oigiki.TagString(hostname, "bold")
 			}
 			ret = append(ret, hostname)
 		}
-		return strings.Join(filterEmptyStringsOut(ret), colors.TagString("@", conf.ColorTheme.At))
+		return strings.Join(filterEmptyStringsOut(ret), oigiki.TagString("@", conf.ColorTheme.At))
 	},
 	// this expects the title string (if any) to be passed in
 	"underline": func(conf types.Config, _ types.ApiInfo, args []string) string {
 		if len(args) == 0 || len(args[0]) == 0 {
 			return ""
 		}
-		return colors.TagString(strings.Repeat(conf.Display.Underline, len(args[0])), conf.ColorTheme.Underline)
+		return oigiki.TagString(strings.Repeat(conf.Display.Underline, len(args[0])), conf.ColorTheme.Underline)
 	},
 
 	/// normal functions

@@ -10,12 +10,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"axefetch/colors"
 	"axefetch/icons"
 	"axefetch/modules"
 	"axefetch/paths"
 	"axefetch/types"
 
+	"github.com/0xf0xx0/oigiki"
 	"github.com/fatih/color"
 	"github.com/go-andiamo/splitter"
 	"github.com/pelletier/go-toml/v2"
@@ -42,7 +42,7 @@ var testData = types.ApiInfo{
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
 	IsUsingFallbackStratum: 0,
 	Hostname:               "bitaxe",
-	Version:                "v2.8.0",
+	Version:                "v4.2.0",
 	UptimeSeconds:          481824,
 	SharesAccepted:         881_435_387_204,
 	SharesRejected:         423_482_465,
@@ -187,7 +187,7 @@ func main() {
 				}
 			}
 			if conf.Display.Theme != "manual" {
-				if theme, ok := colors.Themes[strings.ToLower(conf.Display.Theme)]; ok {
+				if theme, ok := icons.Themes[strings.ToLower(conf.Display.Theme)]; ok {
 					conf.ColorTheme = theme
 				} else {
 					println(fmt.Sprintf("unknown theme %q", conf.Display.Theme))
@@ -210,7 +210,7 @@ func printIconAndInfo(icon, info []string, spacing int) {
 	infoLen := len(info)
 	if iconLen < infoLen {
 		/// strip color tags to get print length
-		repeat := strings.Repeat(" ", len(colors.StripLine(icon[iconLen-1])))
+		repeat := strings.Repeat(" ", len(oigiki.StripLine(icon[iconLen-1])))
 		/// pad the icon slice
 		for diff := infoLen - iconLen; diff > 0; diff-- {
 			icon = append(icon, repeat)
@@ -224,8 +224,8 @@ func printIconAndInfo(icon, info []string, spacing int) {
 	for i := range icon {
 		trench := strings.Repeat(" ", spacing)
 		fmt.Printf("%s%s%s\n",
-			colors.ProcessTags(colors.TagString(icon[i], conf.ColorTheme.Icon)),
-			trench, colors.ProcessTags(info[i]))
+			oigiki.ProcessTags(oigiki.TagString(icon[i], conf.ColorTheme.Icon)),
+			trench, oigiki.ProcessTags(info[i]))
 	}
 }
 
@@ -251,7 +251,7 @@ func processFormat(format string, data types.ApiInfo) []string {
 		switch splitline[0] {
 		case "info":
 			{
-				if v := info(args, colors.StripLine(lastline), data); v != "" {
+				if v := info(args, oigiki.StripLine(lastline), data); v != "" {
 					lastline = v
 					res = append(res, v)
 				}
@@ -259,7 +259,7 @@ func processFormat(format string, data types.ApiInfo) []string {
 			}
 		case "prin":
 			{
-				lastline = colors.TagString(strings.Join(args, " "), conf.ColorTheme.Info)
+				lastline = oigiki.TagString(strings.Join(args, " "), conf.ColorTheme.Info)
 				res = append(res, lastline)
 				break
 			}
@@ -295,13 +295,13 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 			if ret == "" {
 				return ret
 			}
-			subtitle := colors.TagString(args[0], conf.ColorTheme.Subtitle)
+			subtitle := oigiki.TagString(args[0], conf.ColorTheme.Subtitle)
 			if conf.Display.BoldTitles {
-				subtitle = colors.TagString(subtitle, "bold")
+				subtitle = oigiki.TagString(subtitle, "bold")
 			}
 			ret = fmt.Sprintf("%s%s %s", subtitle,
-				colors.TagString(conf.Display.Separator, conf.ColorTheme.Separator),
-				colors.TagString(ret, conf.ColorTheme.Info))
+				oigiki.TagString(conf.Display.Separator, conf.ColorTheme.Separator),
+				oigiki.TagString(ret, conf.ColorTheme.Info))
 			break
 		}
 	}

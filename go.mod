@@ -1,8 +1,9 @@
 module axefetch
 
-go 1.24.3
+go 1.24.5
 
 require (
+	github.com/0xf0xx0/oigiki v0.2.1
 	github.com/fatih/color v1.18.0
 	github.com/go-andiamo/splitter v1.2.5
 	github.com/pelletier/go-toml/v2 v2.2.4
