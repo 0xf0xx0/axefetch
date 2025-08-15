@@ -147,7 +147,7 @@ func main() {
 			var icon []string
 			switch conf.Display.Icon {
 			case "vendor":
-				println("unimplemented, waiting for efuse")
+				println("vendor unimplemented, waiting for efuse")
 				fallthrough
 			case "family":
 				{

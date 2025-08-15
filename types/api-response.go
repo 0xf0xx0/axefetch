@@ -5,23 +5,23 @@ type ApiInfo struct {
 	AsicModel              string  `json:"asicModel"`
 	BestDiff               string  `json:"bestDiff"`
 	BestSessionDiff        string  `json:"bestSessionDiff"`
-	BoardFamily            string  `json:"boardFamily"`
+	BoardFamily            string  `json:"deviceModel"`
 	BoardVersion           string  `json:"boardVersion"`
 	BoardVendor            string  `json:"boardVendor"`
 	CoreVoltage            uint16  `json:"coreVoltage"`
 	CoreVoltageActual      uint16  `json:"coreVoltageActual"`
 	Current                float64 `json:"current"`
 	Display                string  `json:"display"`
-	ExpectedHashrate       float64  `json:"expectedHashrate"`
+	ExpectedHashrate       float64 `json:"expectedHashrate"`
 	FallbackStratumPort    uint16  `json:"fallbackStratumPort"`
 	FallbackStratumURL     string  `json:"fallbackStratumURL"`
 	FallbackStratumUser    string  `json:"fallbackStratumUser"`
 	FreeHeap               uint32  `json:"freeHeap"`
-	Frequency              float64  `json:"frequency"`
+	Frequency              float64 `json:"frequency"`
 	Hashrate               float64 `json:"hashrate"`
 	Hostname               string  `json:"hostname"`
 	IdfVersion             string  `json:"idfVersion"`
-	IsUsingFallbackStratum uint8    `json:"isUsingFallbackStratum"`
+	IsUsingFallbackStratum uint8   `json:"isUsingFallbackStratum"`
 	MaxPower               uint8   `json:"maxPower"`
 	NominalVoltage         uint    `json:"nominalVoltage"`
 	Power                  float64 `json:"power"`
@@ -33,7 +33,7 @@ type ApiInfo struct {
 	StratumURL             string  `json:"stratumURL"`
 	StratumUser            string  `json:"stratumUser"`
 	Temp                   float64 `json:"temp"`
-	UptimeSeconds          uint32    `json:"uptimeSeconds"`
+	UptimeSeconds          uint32  `json:"uptimeSeconds"`
 	Version                string  `json:"version"`
 	Voltage                float64 `json:"voltage"`
 	VrTemp                 float64 `json:"vrTemp"`
