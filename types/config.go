@@ -12,7 +12,7 @@ var DefaultConf = Config{
 			`info title`,
 			`info underline`,
 			`info "Model" model`,
-			`info "ASIC(s)" asicmodel`,
+			`info "Chip" chip`,
 			`info "Firmware" firmware`,
 			`info "Uptime" uptime`,
 			`info "TBD" tbd`,
@@ -52,8 +52,8 @@ var DefaultConf = Config{
 		Family:       true,
 		Vendor:       false,
 	},
-	Asicmodel: Asicmodel{
-		Asiccount:      true,
+	Chip: Chip{
+		Count:          true,
 		Smallcorecount: true,
 	},
 	Bestdiff: Bestdiff{
@@ -92,21 +92,22 @@ var DefaultConf = Config{
 }
 
 type Config struct {
+	/// avoid embedding, just because it clutters intellisense
 	/// maybe omitempty? unneccesary tho, unmarshalling doesnt touch keys that arent in the conf
-	General    `toml:"general"`
-	Display    `toml:"display"`
-	ColorTheme `toml:"theme" comment:"Supports everything display.format does"`
-	Title      `toml:"title"`
-	Model      `toml:"model"`
-	Asicmodel  `toml:"asicmodel"`
-	Bestdiff   `toml:"bestdiff"`
-	Efficiency `toml:"efficiency"`
-	Firmware   `toml:"firmware"`
-	Hashrate   `toml:"hashrate"`
-	Pool       `toml:"pool"`
-	Shares     `toml:"shares"`
-	Temp       `toml:"temp"`
-	Uptime     `toml:"uptime"`
+	General    General    `toml:"general"`
+	Display    Display    `toml:"display"`
+	ColorTheme ColorTheme `toml:"theme" comment:"Supports everything display.format does"`
+	Title      Title      `toml:"title"`
+	Model      Model      `toml:"model"`
+	Chip       Chip       `toml:"chip"`
+	Bestdiff   Bestdiff   `toml:"bestdiff"`
+	Efficiency Efficiency `toml:"efficiency"`
+	Firmware   Firmware   `toml:"firmware"`
+	Hashrate   Hashrate   `toml:"hashrate"`
+	Pool       Pool       `toml:"pool"`
+	Shares     Shares     `toml:"shares"`
+	Temp       Temp       `toml:"temp"`
+	Uptime     Uptime     `toml:"uptime"`
 }
 type General struct {
 	IP string `toml:"ip" comment:"IP address of your *axe"`
@@ -138,8 +139,8 @@ type Model struct {
 	Family       bool `toml:"family"`
 	Vendor       bool `toml:"vendor"`
 }
-type Asicmodel struct {
-	Asiccount      bool `toml:"asic_count"`
+type Chip struct {
+	Count          bool `toml:"count"`
 	Smallcorecount bool `toml:"small_core_count"`
 }
 type Bestdiff struct {

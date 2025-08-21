@@ -19,7 +19,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/go-andiamo/splitter"
 	"github.com/pelletier/go-toml/v2"
-	"github.com/tiendc/go-deepcopy"
 	"github.com/urfave/cli/v3"
 )
 
@@ -106,7 +105,7 @@ func main() {
 				color.NoColor = false
 			}
 			/// set defaults
-			deepcopy.Copy(&conf, &types.DefaultConf)
+			copyConf(&conf, &types.DefaultConf)
 
 			if passedConfig := ctx.String("conf"); passedConfig != "" && passedConfig != "none" {
 				loadConfig(passedConfig, &conf)
@@ -153,7 +152,7 @@ func main() {
 				{
 					conf.Display.Icon = strings.ToLower(axeInfo.BoardFamily)
 				}
-			case "asic":
+			case "chip":
 				{
 					conf.Display.Icon = axeInfo.AsicModel
 				}
@@ -210,7 +209,7 @@ func printIconAndInfo(icon, info []string, spacing int) {
 	infoLen := len(info)
 	if iconLen < infoLen {
 		/// strip color tags to get print length
-		repeat := strings.Repeat(" ", len(oigiki.StripLine(icon[iconLen-1])))
+		repeat := strings.Repeat(" ", len(oigiki.StripTags(icon[iconLen-1])))
 		/// pad the icon slice
 		for diff := infoLen - iconLen; diff > 0; diff-- {
 			icon = append(icon, repeat)
@@ -251,7 +250,7 @@ func processFormat(format string, data types.ApiInfo) []string {
 		switch splitline[0] {
 		case "info":
 			{
-				if v := info(args, oigiki.StripLine(lastline), data); v != "" {
+				if v := info(args, oigiki.StripTags(lastline), data); v != "" {
 					lastline = v
 					res = append(res, v)
 				}
@@ -299,7 +298,7 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 			if conf.Display.BoldTitles {
 				subtitle = oigiki.TagString(subtitle, "bold")
 			}
-			ret = fmt.Sprintf("%s%s %s", subtitle,
+			ret = fmt.Sprintf("%s{/bold}%s %s", subtitle,
 				oigiki.TagString(conf.Display.Separator, conf.ColorTheme.Separator),
 				oigiki.TagString(ret, conf.ColorTheme.Info))
 			break
@@ -346,4 +345,20 @@ func reqAPI(endpoint, ip string, unmarshalInto any) error {
 		return err
 	}
 	return nil
+}
+func copyConf(dest, src *types.Config) {
+	dest.Bestdiff = src.Bestdiff
+	dest.Chip = src.Chip
+	dest.ColorTheme = src.ColorTheme
+	dest.Display = src.Display
+	dest.Efficiency = src.Efficiency
+	dest.Firmware = src.Firmware
+	dest.General = src.General
+	dest.Hashrate = src.Hashrate
+	dest.Model = src.Model
+	dest.Pool = src.Pool
+	dest.Shares = src.Shares
+	dest.Temp = src.Temp
+	dest.Title = src.Title
+	dest.Uptime = src.Uptime
 }

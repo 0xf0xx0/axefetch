@@ -51,10 +51,10 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	"tbd": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		return fmt.Sprintf("%s@%s", unitFormat(ai.Frequency, "mhz"), unitFormat(float64(ai.CoreVoltage), "mv"))
 	},
-	"asicmodel": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+	"chip": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
 		/// this gets prepended
-		if conf.Asicmodel.Asiccount {
+		if conf.Chip.Count {
 			ret = append(ret, fmt.Sprintf("%dx", ai.AsicCount))
 		}
 		ret = append(ret, ai.AsicModel)

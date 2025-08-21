@@ -12,7 +12,7 @@ this is an invalid line, so its not printed :3
 info title
 info underline
 info \"Model\" model
-info \"ASIC(s)\" asicmodel
+info \"Chip\" chip
 info \"Firmware\" firmware
 info \"Uptime\" uptime
 info \"TBD\" tbd
@@ -46,8 +46,8 @@ underline = '-'
 title = 'green'
 at = 'green'
 underline = 'white'
-subtitle = 'white'
-separator = 'white'
+subtitle = 'green'
+separator = 'blue'
 info = 'white'
 # Default icon color, if the icon doesn't specify it's own
 icon = 'green'
@@ -61,8 +61,8 @@ board_version = true
 family = true
 vendor = false
 
-[asicmodel]
-asic_count = true
+[chip]
+count = true
 small_core_count = true
 
 [bestdiff]
