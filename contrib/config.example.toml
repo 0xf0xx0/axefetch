@@ -11,18 +11,18 @@ format = """
 this is an invalid line, so its not printed :3
 info title
 info underline
-info \"Model\" model
-info \"Chip\" chip
-info \"Firmware\" firmware
-info \"Uptime\" uptime
-info \"TBD\" tbd
-info \"Best Difficulty\" bestdiff
-info \"Shares\" shares
-info \"Pool\" pool
-info \"Hashrate\" hashrate
-info \"Efficiency\" efficiency
-info \"Temperature\" temp
-info \"Heap\" heap
+info "Model" model
+info "Chip" chip
+info "Firmware" firmware
+info "Uptime" uptime
+info "TBD" tbd
+info "Best Difficulty" bestdiff
+info "Shares" shares
+info "Pool" pool
+info "Hashrate" hashrate
+info "Efficiency" efficiency
+info "Temperature" temp
+info "Heap" heap
 
 prin circlejerking into open source
 """

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,7 +18,6 @@ import (
 
 	"github.com/0xf0xx0/oigiki"
 	"github.com/fatih/color"
-	"github.com/go-andiamo/splitter"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/urfave/cli/v3"
 )
@@ -31,8 +31,8 @@ var testData = types.ApiInfo{
 	BoardFamily:            "Gamma",
 	BoardVersion:           "621",
 	BoardVendor:            "Fluffy Inc.",
-	StratumURL:             "pooblic-pool.io",
-	StratumPort:            3333,
+	StratumURL:             "pogolo.local",
+	StratumPort:            5621,
 	StratumUser:            "bc1qfakeaddress.bitaxuh",
 	FallbackStratumURL:     "closed-source-pool.evil",
 	FallbackStratumPort:    666,
@@ -230,16 +230,12 @@ func printIconAndInfo(icon, info []string, spacing int) {
 
 // processes the display format string and returns a slice of the (valid) lines
 func processFormat(format string, data types.ApiInfo) []string {
-	/// all of this to handle some QUOTES
-	/// I HATE ESCAPING
-	split, _ := splitter.NewSplitter(' ', splitter.DoubleQuotesBackSlashEscaped)
-	split.AddDefaultOptions(splitter.IgnoreEmpties, splitter.StripQuotes)
 	res := []string{}
 	lastline := "" /// store the last printed line and pass it in
 	/// this is only used for the underline icl, prolly needs to be redone
 
 	for line := range strings.Lines(format) {
-		splitline, _ := split.Split(strings.TrimSpace(line))
+		splitline := splitFormatLine(strings.TrimSpace(line))
 
 		/// skip empty lines
 		if len(splitline) == 0 {
@@ -361,4 +357,31 @@ func copyConf(dest, src *types.Config) {
 	dest.Temp = src.Temp
 	dest.Title = src.Title
 	dest.Uptime = src.Uptime
+}
+
+// / splits string, preserving quotes
+func splitFormatLine(line string) []string {
+	out := make([]string, 0, 4)
+	b := bytes.NewBuffer(make([]byte, 0, 16))
+	quoteActive := false
+	escaped := false
+	for _, c := range line {
+		if c == '\\' {
+			escaped = true
+		} else if c == '"' && !escaped {
+			quoteActive = !quoteActive
+		} else if !quoteActive && c == ' ' {
+			out = append(out, b.String())
+			b.Reset()
+		} else {
+			b.WriteRune(c)
+			if escaped {
+				escaped = false
+			}
+		}
+	}
+	if b.Len() > 0 {
+		out = append(out, b.String())
+	}
+	return out
 }
