@@ -36,7 +36,7 @@ var testData = types.ApiInfo{
 	StratumUser:            "bc1qfakeaddress.bitaxuh",
 	FallbackStratumURL:     "closed-source-pool.evil",
 	FallbackStratumPort:    666,
-	Frequency:              42069,
+	Frequency:              42069.69,
 	CoreVoltage:            42069,
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
 	IsUsingFallbackStratum: 0,

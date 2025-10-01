@@ -8,7 +8,7 @@ type ApiInfo struct {
 	BoardFamily            string  `json:"deviceModel"`
 	BoardVersion           string  `json:"boardVersion"`
 	BoardVendor            string  `json:"boardVendor"`
-	CoreVoltage            uint16  `json:"coreVoltage"`
+	CoreVoltage            float64  `json:"coreVoltage"`
 	CoreVoltageActual      uint16  `json:"coreVoltageActual"`
 	Current                float64 `json:"current"`
 	Display                string  `json:"display"`
