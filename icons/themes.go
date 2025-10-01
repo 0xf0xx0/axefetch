@@ -9,13 +9,13 @@ import "axefetch/types"
 // color settings
 var Themes = map[string]types.ColorTheme{
 	"gamma": {
-		Title:     "green",
+		Title:     "greenbright",
 		At:        "white",
 		Underline: "blackbright",
 		Subtitle:  "greenbright",
 		Separator: "blackbright",
-		Info:      "green",
-		Icon:      "green",
+		Info:      "greenbright",
+		Icon:      "greenbright",
 	},
 	"supra": {
 		Title:     "blue",
@@ -45,13 +45,14 @@ var Themes = map[string]types.ColorTheme{
 		Icon:      "red",
 	},
 
+	/// my fur
 	"0xf0xx0": {
-		Title:     "#afbbd9",
-		At:        "#acb7b4",
-		Underline: "#5f5a4c",
-		Subtitle:  "#768b55",
-		Separator: "#5f5a4c",
-		Info:      "#acb7b4",
-		Icon:      "#5f5a4c",
+		Title:     "#deaf8e",
+		At:        "#f04651",
+		Underline: "#383631",
+		Subtitle:  "#f04651",
+		Separator: "#383631",
+		Info:      "#deaf8e",
+		Icon:      "#deaf8e",
 	},
 }

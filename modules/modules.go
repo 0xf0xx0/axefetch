@@ -291,7 +291,10 @@ func unitFormat(value float64, unit string) string {
 func getWorkerFromUser(username string) string {
 	split := strings.Split(username, ".")
 	if len(split) == 1 {
-		return fmt.Sprintf("%s...%s", username[:4], username[len(username)-4:])
+		if len(split[0]) > 16 {
+			return fmt.Sprintf("%s...%s", username[:4], username[len(username)-4:])
+		}
+		return split[0]
 	}
 	return split[1]
 }
