@@ -3,12 +3,12 @@ package types
 type ApiInfo struct {
 	AsicCount              uint8   `json:"asicCount"`
 	AsicModel              string  `json:"asicModel"`
-	BestDiff               float64  `json:"bestDiff"`
-	BestSessionDiff        float64  `json:"bestSessionDiff"`
+	BestDiff               float64 `json:"bestDiff"`
+	BestSessionDiff        float64 `json:"bestSessionDiff"`
 	BoardFamily            string  `json:"deviceModel"`
 	BoardVersion           string  `json:"boardVersion"`
 	BoardVendor            string  `json:"boardVendor"`
-	CoreVoltage            float64  `json:"coreVoltage"`
+	CoreVoltage            float64 `json:"coreVoltage"`
 	CoreVoltageActual      uint16  `json:"coreVoltageActual"`
 	Current                float64 `json:"current"`
 	Display                string  `json:"display"`
