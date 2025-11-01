@@ -26,8 +26,8 @@ var conf types.Config /// im not passing this stupid struct around
 var testData = types.ApiInfo{
 	AsicCount:              1,
 	AsicModel:              "BM1370",
-	BestDiff:               "210G",
-	BestSessionDiff:        "330.73M",
+	BestDiff:               210_000_000,
+	BestSessionDiff:        330_730_700,
 	BoardFamily:            "Gamma",
 	BoardVersion:           "621",
 	BoardVendor:            "Fluffy Inc.",

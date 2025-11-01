@@ -3,8 +3,8 @@ package types
 type ApiInfo struct {
 	AsicCount              uint8   `json:"asicCount"`
 	AsicModel              string  `json:"asicModel"`
-	BestDiff               string  `json:"bestDiff"`
-	BestSessionDiff        string  `json:"bestSessionDiff"`
+	BestDiff               float64  `json:"bestDiff"`
+	BestSessionDiff        float64  `json:"bestSessionDiff"`
 	BoardFamily            string  `json:"deviceModel"`
 	BoardVersion           string  `json:"boardVersion"`
 	BoardVendor            string  `json:"boardVendor"`
