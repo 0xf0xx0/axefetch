@@ -123,6 +123,7 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		return strings.Join(filterEmptyStringsOut(ret), " ")
 	},
 	"pool": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		/// TODO: stratum+tcp://?
 		ret := ai.StratumURL
 		port := ""
 		if ai.IsUsingFallbackStratum == 1 {

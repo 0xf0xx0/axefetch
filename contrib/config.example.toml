@@ -13,9 +13,9 @@ info title
 info underline
 info "Model" model
 info "Chip" chip
+info "Clock" clock
 info "Firmware" firmware
 info "Uptime" uptime
-info "TBD" tbd
 info "Best Difficulty" bestdiff
 info "Shares" shares
 info "Pool" pool
