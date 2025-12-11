@@ -168,7 +168,7 @@ func main() {
 			if conf.Display.Icon != "none" {
 				potentialIcon, ok := style.Icons[conf.Display.Icon]
 				if ok {
-					icon = strings.Split(potentialIcon, "\n")
+					icon = filterEmptyStringsOut(strings.Split(potentialIcon, "\n"))
 				} else {
 					icon = []string{""} /// just print no icon
 					println(fmt.Sprintf("unknown icon %q", conf.Display.Icon))
