@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"axefetch/types"
 )
 
 // because i cant inject...
@@ -31,23 +29,4 @@ func getConfigDir() string {
 		os.Exit(1)
 	}
 	return filepath.Join(userConfigDir, "./axefetch")
-}
-
-func MakeConfigDirTree(defaultConf types.Config) bool {
-	if _, err := os.Stat(CONFIG_ROOT); err != nil {
-		for _, path := range PATHS {
-			mkdirIfNotExist(path, 0755)
-		}
-		return true
-	}
-	return false
-}
-func mkdirIfNotExist(path string, perm os.FileMode) {
-	if _, err := os.Stat(path); err != nil {
-		err = os.MkdirAll(path, perm)
-		if err != nil {
-			println(fmt.Sprintf("couldnt mkdir %s: %s", path, err))
-		}
-	}
-	/// path exists, do nothing
 }

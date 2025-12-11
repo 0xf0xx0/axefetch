@@ -54,10 +54,6 @@ var testData = types.ApiInfo{
 }
 
 func main() {
-	if paths.MakeConfigDirTree(types.DefaultConf) {
-		writeDefaultConfig(filepath.Join(paths.CONFIG_ROOT, "config.toml"))
-	}
-
 	app := &cli.Command{
 		Name:                   "axefetch",
 		Version:                "0.0.1",
@@ -92,12 +88,11 @@ func main() {
 				Hidden: true,
 			},
 			&cli.StringFlag{
-				Name:   "createdefaultconfig",
-				Hidden: true,
+				Name:   "writedefaultconfig",
 			},
 		},
 		Action: func(_ context.Context, ctx *cli.Command) error {
-			if path := ctx.String("createdefaultconfig"); path != "" {
+			if path := ctx.String("writedefaultconfig"); path != "" {
 				writeDefaultConfig(path)
 				return nil
 			}
@@ -318,10 +313,21 @@ func loadConfig(path string, conf *types.Config) {
 }
 func writeDefaultConfig(path string) error {
 	conf, _ := toml.Marshal(types.DefaultConf)
-	if err := os.WriteFile(path, conf, 0755); err != nil {
+	if err := os.WriteFile(resolvePath(path), conf, 0755); err != nil {
 		return cli.Exit(fmt.Sprintf("couldnt create config file: %s", err), 1)
 	}
 	return nil
+}
+// resolves ~ and cleans path
+// https://stackoverflow.com/a/17617721
+func resolvePath(path string) string {
+	if strings.HasPrefix(path, "~") {
+		// Use strings.HasPrefix so we don't match paths like
+		// "/something/~/something/"
+		home, _ := os.UserHomeDir()
+		path = filepath.Join(home, path[1:])
+	}
+	return path
 }
 
 // just http.Get but errors on non 200 response and wraps up the root path
