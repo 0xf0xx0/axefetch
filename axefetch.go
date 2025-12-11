@@ -173,8 +173,10 @@ func main() {
 			}
 
 			if conf.Display.Icon != "none" {
-				icon = icons.SearchAndLoadIcon(conf.Display.Icon)
-				if icon == nil {
+				potentialIcon, ok := icons.Icons[conf.Display.Icon]
+				if ok {
+					icon = strings.Split(potentialIcon, "\n")
+				} else {
 					icon = []string{""} /// just print no icon
 					println(fmt.Sprintf("unknown icon %q", conf.Display.Icon))
 					conf.Display.IconSpacing = 0

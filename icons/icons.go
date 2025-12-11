@@ -1,35 +1,84 @@
 package icons
 
 import (
-	"path/filepath"
+	_ "embed"
+)
 
-	"axefetch/paths"
+// embedding
+var (
+	//go:embed embeds/models/max.txt
+	max string
+	//go:embed embeds/models/ultra.txt
+	ultra string
+	//go:embed embeds/models/supra.txt
+	supra string
+	//go:embed embeds/models/gamma.txt
+	gamma string
+	// go:embed embeds/models/gammaturbo.txt
+	// gammaturbo string
+	// go:embed embeds/models/naja.txt
+	// naja string
+)
+var (
+	//go:embed embeds/asics/BM1366.txt
+	BM1366 string
+	//go:embed embeds/asics/BM1368.txt
+	BM1368 string
+	//go:embed embeds/asics/BM1370.txt
+	BM1370 string
+	//go:embed embeds/asics/BM1397.txt
+	BM1397 string
+)
+/*var (
+	//go:embed embeds/vendors/altair.txt
+	altair string
+	//go:embed embeds/vendors/d_central.txt
+	d_central string
+	//go:embed embeds/vendors/gekkoscience.txt
+	gekkoscience string
+	//go:embed embeds/vendors/solominingde.txt
+	solominingde string
+	//go:embed embeds/vendors/solominingco.txt
+	solominingco string
+	//go:embed embeds/vendors/solosatoshi.txt
+	solosatoshi string
+	//go:embed embeds/vendors/tinychiphub.txt
+	tinychiphub string
+)*/
+
+var (
+	//go:embed embeds/misc/bitcoin.txt
+	bitcoin string
+	//go:embed embeds/misc/osmu.txt
+	osmu string
 )
 
 // TODO: icons
+// must be lowercase
 var Icons = map[string]string{
 	/// families
-	"gamma": filepath.Join(paths.MODEL_ROOT, "gamma.txt"),
-	"max":   filepath.Join(paths.MODEL_ROOT, "max.txt"),
-	"supra": filepath.Join(paths.MODEL_ROOT, "supra.txt"),
-	"ultra": filepath.Join(paths.MODEL_ROOT, "ultra.txt"),
+	"max":   max,
+	"ultra": ultra,
+	"supra": supra,
+	"gamma": gamma,
 
 	/// chips
-	"BM1366": filepath.Join(paths.ASIC_ROOT, "BM1366.txt"),
-	"BM1368": filepath.Join(paths.ASIC_ROOT, "BM1368.txt"),
-	"BM1370": filepath.Join(paths.ASIC_ROOT, "BM1370.txt"),
-	"BM1397": filepath.Join(paths.ASIC_ROOT, "BM1397.txt"),
+	"bm1366": BM1366,
+	"bm1368": BM1368,
+	"bm1370": BM1370,
+	"bm1397": BM1397,
 
 	/// vendors
-	"altair": filepath.Join(paths.VENDOR_ROOT, "altair.txt"),
-	"d-central": filepath.Join(paths.VENDOR_ROOT, "d-central.txt"),
-	"gekkoscience": filepath.Join(paths.VENDOR_ROOT, "gekkoscience.txt"),
-	"solominingde": filepath.Join(paths.VENDOR_ROOT, "solominingde.txt"),
-	"solominingco": filepath.Join(paths.VENDOR_ROOT, "solominingco.txt"),
-	"solosatoshi": filepath.Join(paths.VENDOR_ROOT, "solosatoshi.txt"),
-	"tinychiphub": filepath.Join(paths.VENDOR_ROOT, "tinychiphub.txt"),
+	/*"altair":       altair,
+	"d-central":    d_central,
+	"gekkoscience": gekkoscience,
+	"solominingde": solominingde,
+	"solominingco": solominingco,
+	"solosatoshi":  solosatoshi,
+	"tinychiphub":  tinychiphub,
+	*/
 
 	/// misc
-	"bitcoin": filepath.Join(paths.MISC_ROOT, "bitcoin.txt"),
-	"osmu": filepath.Join(paths.MISC_ROOT, "osmu.txt"),
+	"bitcoin": bitcoin,
+	"osmu":    osmu,
 }
