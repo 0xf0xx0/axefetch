@@ -1,5 +1,7 @@
 github.com/0xf0xx0/oigiki v1.0.3 h1:btW7G+n5JrRyCI453vX7Qj4aFBzXdbryAb4cLoRpyL8=
 github.com/0xf0xx0/oigiki v1.0.3/go.mod h1:TKpjJDwCIdXZVKR7a8jIP2oo3W8VADqLgMyuPe7KpXA=
+github.com/0xf0xx0/oigiki v1.1.0 h1:mVBgSdCQ15qYuA9hMswQcfz7BkQ2G+nA6GmJ9QnwqYU=
+github.com/0xf0xx0/oigiki v1.1.0/go.mod h1:TKpjJDwCIdXZVKR7a8jIP2oo3W8VADqLgMyuPe7KpXA=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fatih/color v1.18.0 h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
