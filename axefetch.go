@@ -11,7 +11,6 @@ import (
 	"axefetch/types"
 
 	"github.com/0xf0xx0/oigiki"
-	"github.com/fatih/color"
 	"github.com/urfave/cli/v3"
 )
 
@@ -46,23 +45,56 @@ var testData = types.ApiInfo{
 	VrTemp:                 66,
 }
 
+const commandHelpTemplate = `Name:
+   {bold}{blue}{{.Name}} - {{.Usage}}{/}
+
+Usage:
+   {green}{{.Name}} {blue}[options]{/}
+
+Options:{blue}
+   {{range .VisibleFlags}}{{.String}}
+   {{end}}{/}
+Version:
+   {green}v{{.Version}}
+`
+
 func main() {
+	cli.RootCommandHelpTemplate = oigiki.ProcessTags(commandHelpTemplate)
 	app := &cli.Command{
 		Name:                   "axefetch",
 		Version:                "0.0.1",
 		Usage:                  "neofetch for *axes",
 		UsageText:              "axefetch [options]",
 		UseShortOptionHandling: true,
-		EnableShellCompletion:  true,
+		MutuallyExclusiveFlags: []cli.MutuallyExclusiveFlags{
+			{
+				Flags: [][]cli.Flag{
+					{
+						&cli.BoolFlag{
+							Name:  "color",
+							Usage: "force color output",
+						},
+					},
+					{
+						&cli.BoolFlag{
+							Name:    "nocolor",
+							Aliases: []string{"stdout"},
+							Usage:   "disable color output",
+						},
+					},
+				},
+			},
+		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "writedefaultconf",
 				Usage: "write default config to `path`",
 			},
 			&cli.StringFlag{
-				Name:  "conf",
-				Usage: "config file `path` (or 'none')",
-				Value: filepath.Join(getConfigDir(), "config.toml"),
+				Name:    "config",
+				Aliases: []string{"c", "conf"},
+				Usage:   "config file `path` (or 'none')",
+				Value:   filepath.Join(getConfigDir(), "config.toml"),
 			},
 			&cli.StringFlag{
 				Name:  "ip",
@@ -77,10 +109,6 @@ func main() {
 				Usage: "color `theme` (name, 'manual')",
 			},
 			&cli.BoolFlag{
-				Name:  "force-color",
-				Usage: "force color output",
-			},
-			&cli.BoolFlag{
 				Name:   "testing",
 				Hidden: true,
 			},
@@ -90,8 +118,11 @@ func main() {
 				writeDefaultConfig(path)
 				return nil
 			}
-			if ctx.Bool("force-color") {
-				color.NoColor = false
+			if ctx.Bool("color") {
+				oigiki.NoColor = false
+			}
+			if ctx.Bool("nocolor") {
+				oigiki.NoColor = true
 			}
 			/// set defaults
 			copyConf(&conf, &types.DefaultConf)
