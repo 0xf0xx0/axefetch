@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"axefetch/icons"
+	"axefetch/style"
 	"axefetch/types"
 
 	"github.com/0xf0xx0/oigiki"
@@ -166,7 +166,7 @@ func main() {
 			}
 
 			if conf.Display.Icon != "none" {
-				potentialIcon, ok := icons.Icons[conf.Display.Icon]
+				potentialIcon, ok := style.Icons[conf.Display.Icon]
 				if ok {
 					icon = strings.Split(potentialIcon, "\n")
 				} else {
@@ -176,7 +176,7 @@ func main() {
 				}
 			}
 			if conf.Display.Theme != "manual" {
-				if theme, ok := icons.Themes[strings.ToLower(conf.Display.Theme)]; ok {
+				if theme, ok := style.Themes[strings.ToLower(conf.Display.Theme)]; ok {
 					conf.ColorTheme = theme
 				} else {
 					println(fmt.Sprintf("unknown theme %q", conf.Display.Theme))
