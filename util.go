@@ -204,9 +204,9 @@ func filterEmptyStringsOut(s []string) []string {
 
 // prints a shortened data line
 // TODO: rename shouldBeShort
-func printWithShortpaw(str, shortpaw string, shouldBeShort bool) string {
+func printWithShortpaw(str, longpaw string, shouldBeShort bool) string {
 	if shouldBeShort {
 		return str
 	}
-	return fmt.Sprintf("%s %s", str, shortpaw)
+	return fmt.Sprintf("%s %s", str, longpaw)
 }

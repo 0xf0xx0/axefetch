@@ -12,9 +12,9 @@ var Themes = map[string]types.ColorTheme{
 		Title:     "greenbright",
 		At:        "white",
 		Underline: "blackbright",
-		Subtitle:  "greenbright",
+		Subtitle:  "green",
 		Separator: "blackbright",
-		Info:      "greenbright",
+		Info:      "cyan",
 		Icon:      "greenbright",
 	},
 	"supra": {
@@ -33,7 +33,7 @@ var Themes = map[string]types.ColorTheme{
 		Subtitle:  "magenta",
 		Separator: "blackbright",
 		Info:      "blue",
-		Icon:      "blue",
+		Icon:      "bluebright",
 	},
 	"max": {
 		Title:     "redbright",
@@ -48,11 +48,11 @@ var Themes = map[string]types.ColorTheme{
 	/// my fur
 	"0xf0xx0": {
 		Title:     "#deaf8e",
-		At:        "#f04651",
-		Underline: "#383631",
+		At:        "#262638",
+		Underline: "#262638",
 		Subtitle:  "#f04651",
-		Separator: "#383631",
-		Info:      "#deaf8e",
-		Icon:      "#deaf8e",
+		Separator: "#262638",
+		Info:      "white",
+		Icon:      "#383631",
 	},
 }

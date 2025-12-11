@@ -47,7 +47,7 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 
 	/// normal functions
-	"tbd": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+	"clock": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		return fmt.Sprintf("%s@%s", unitFormat(ai.Frequency, "mhz"), unitFormat(float64(ai.CoreVoltage), "mv"))
 	},
 	"chip": func(conf types.Config, ai types.ApiInfo, _ []string) string {

@@ -4,7 +4,8 @@ import (
 	_ "embed"
 )
 
-// embedding
+// embeddings
+
 var (
 	//go:embed embeds/models/max.txt
 	max string
