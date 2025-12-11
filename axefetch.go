@@ -56,6 +56,10 @@ func main() {
 		EnableShellCompletion:  true,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
+				Name:  "writedefaultconf",
+				Usage: "write default config to `path`",
+			},
+			&cli.StringFlag{
 				Name:  "conf",
 				Usage: "config file `path` (or 'none')",
 				Value: filepath.Join(getConfigDir(), "config.toml"),
@@ -79,9 +83,6 @@ func main() {
 			&cli.BoolFlag{
 				Name:   "testing",
 				Hidden: true,
-			},
-			&cli.StringFlag{
-				Name: "writedefaultconfig",
 			},
 		},
 		Action: func(_ context.Context, ctx *cli.Command) error {
@@ -244,6 +245,7 @@ func splitFormatLine(line string) []string {
 	}
 	return out
 }
+
 // processes the display format string and returns a slice of the (valid) lines
 func processFormat(format string, data types.ApiInfo) []string {
 	res := []string{}
