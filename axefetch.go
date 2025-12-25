@@ -172,7 +172,7 @@ func main() {
 				{
 					conf.Display.Icon = strings.ToLower(axeInfo.BoardFamily)
 				}
-			case "chip":
+			case "asic":
 				{
 					conf.Display.Icon = axeInfo.AsicModel
 				}
@@ -284,10 +284,13 @@ func processFormat(format string, data types.ApiInfo) []string {
 	/// this is only used for the underline icl, prolly needs to be redone
 
 	for line := range strings.Lines(format) {
+		/// skip empty lines
+		if len(line) == 0 {
+			continue
+		}
 		splitline := splitFormatLine(strings.TrimSpace(line))
 
-		/// skip empty lines
-		if len(splitline) == 0 {
+		if len(splitline) < 2 {
 			continue
 		}
 		args := splitline[1:]
@@ -318,25 +321,31 @@ func processFormat(format string, data types.ApiInfo) []string {
 	}
 	return res
 }
-
+// mimics info from neofetch
 func info(args []string, lastline string, data types.ApiInfo) string {
 	ret := ""
 	/// two formats: 'info <func>' and 'info <subtitle> <func>'
-	/// left loose on purpose
+	/// coded loosely on purpose
 	switch len(args) {
 	/// <func>
 	case 1:
 		{
 			/// coloring for these is handled in each func
-			ret = Modules[args[0]](conf, data, []string{lastline})
+			fn, ok := Modules[args[0]]
+			if !ok {
+				ret = fmt.Sprintf("func %q doesnt exist (did you typo?)", args[0])
+				break
+			}
+			ret = fn(conf, data, []string{lastline})
 			break
 		}
 	/// <subtitle> <func>
 	case 2:
 		{
-			fn := Modules[args[1]]
-			if fn == nil {
-				return ret
+			fn, ok := Modules[args[1]]
+			if !ok {
+				ret = fmt.Sprintf("func %q doesnt exist (did you typo?)", args[1])
+				break
 			}
 			ret = fn(conf, data, []string{})
 			if ret == "" {
@@ -354,6 +363,7 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 	}
 	return ret
 }
-func prin(args []string, lastline string, data types.ApiInfo) string {
+// mimics prin from neofetch
+func prin(args []string, _ string, _ types.ApiInfo) string {
 	return oigiki.TagString(strings.Join(args, " "), conf.ColorTheme.Info)
 }

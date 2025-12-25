@@ -58,7 +58,7 @@ func getConfigDir() string {
 }
 func copyConf(dest, src *types.Config) {
 	dest.Bestdiff = src.Bestdiff
-	dest.Chip = src.Chip
+	dest.Asic = src.Asic
 	dest.ColorTheme = src.ColorTheme
 	dest.Display = src.Display
 	dest.Efficiency = src.Efficiency

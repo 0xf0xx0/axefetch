@@ -3,8 +3,8 @@
 ip = 'replace me'
 
 [display]
-# Neofetch-like, uses 'info' and 'prin'
-# Supports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags
+# Neofetch-like
+# See pkg.go.dev/git.0xf0xx0.eth.limo/0xf0xx0/oigiki for color docs
 # '{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'
 # invalid lines are ignored
 format = """

@@ -12,7 +12,7 @@ var DefaultConf = Config{
 			`info title`,
 			`info underline`,
 			`info "Model" model`,
-			`info "Chip" chip`,
+			`info "Asic" asic`,
 			`info "Clock" clock`,
 			`info "Firmware" firmware`,
 			`info "Uptime" uptime`,
@@ -52,7 +52,7 @@ var DefaultConf = Config{
 		Family:       true,
 		Vendor:       false,
 	},
-	Chip: Chip{
+	Asic: Asic{
 		Count:          true,
 		Smallcorecount: true,
 	},
@@ -94,29 +94,29 @@ var DefaultConf = Config{
 type Config struct {
 	/// avoid embedding, just because it clutters intellisense
 	/// maybe omitempty? unneccesary tho, unmarshalling doesnt touch keys that arent in the conf
-	General    General    `toml:"general"`
-	Display    Display    `toml:"display"`
-	ColorTheme ColorTheme `toml:"theme" comment:"Supports everything display.format does"`
-	Title      Title      `toml:"title"`
-	Model      Model      `toml:"model"`
-	Chip       Chip       `toml:"chip"`
-	Bestdiff   Bestdiff   `toml:"bestdiff"`
-	Efficiency Efficiency `toml:"efficiency"`
-	Firmware   Firmware   `toml:"firmware"`
-	Hashrate   Hashrate   `toml:"hashrate"`
-	Pool       Pool       `toml:"pool"`
-	Shares     Shares     `toml:"shares"`
-	Temp       Temp       `toml:"temp"`
-	Uptime     Uptime     `toml:"uptime"`
+	General    `toml:"general"`
+	Display    `toml:"display"`
+	ColorTheme `toml:"theme" comment:"Supports everything display.format does"`
+	Title      `toml:"title"`
+	Model      `toml:"model"`
+	Asic       `toml:"asic"`
+	Bestdiff   `toml:"bestdiff"`
+	Efficiency `toml:"efficiency"`
+	Firmware   `toml:"firmware"`
+	Hashrate   `toml:"hashrate"`
+	Pool       `toml:"pool"`
+	Shares     `toml:"shares"`
+	Temp       `toml:"temp"`
+	Uptime     `toml:"uptime"`
 }
 type General struct {
 	IP string `toml:"ip" comment:"IP address of your *axe"`
 }
 type Display struct {
-	Format      string `toml:"format,multiline" comment:"Neofetch-like, uses 'info' and 'prin'\nSupports 16 and hex colors, bg coloring, and bold/italic/underline with chainable color tags\n'{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'\ninvalid lines are ignored"`
-	Icon        string `toml:"icon" comment:"Selected icon name or path\nDefault: 'family'\nValues: 'vendor', 'family', 'none', or path to ascii art in a plaintext file"`
+	Format      string `toml:"format,multiline" comment:"Neofetch-like\nSee https://pkg.go.dev/git.0xf0xx0.eth.limo/0xf0xx0/oigiki for color tag docs\ninvalid lines are ignored"`
+	Icon        string `toml:"icon" comment:"Selected icon name or path\nDefault: 'family'\nValues: 'asic', 'family', 'none', or path to ascii art in a plaintext file"`
 	IconSpacing int    `toml:"icon_spacing" comment:"Spaces between the icon and the info"`
-	Theme       string `toml:"theme" comment:"Default: 'family'\nValues: 'vendor', 'family', 'manual', or theme name"`
+	Theme       string `toml:"theme" comment:"Default: 'family'\nValues: 'family', 'manual', or theme name"`
 	BoldTitles  bool   `toml:"bold_titles"`
 	Separator   string `toml:"separator" comment:"Separator between subtitle and info"`
 	Underline   string `toml:"underline" comment:"Underline char"`
@@ -139,7 +139,7 @@ type Model struct {
 	Family       bool `toml:"family"`
 	Vendor       bool `toml:"vendor"`
 }
-type Chip struct {
+type Asic struct {
 	Count          bool `toml:"count"`
 	Smallcorecount bool `toml:"small_core_count"`
 }
