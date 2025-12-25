@@ -4,15 +4,14 @@ ip = 'replace me'
 
 [display]
 # Neofetch-like
-# See pkg.go.dev/git.0xf0xx0.eth.limo/0xf0xx0/oigiki for color docs
-# '{white}', '{bg#ff00ff}', '{italic}{bgmagentabright}'
+# See https://pkg.go.dev/git.0xf0xx0.eth.limo/0xf0xx0/oigiki for color tag docs
 # invalid lines are ignored
 format = """
 this is an invalid line, so its not printed :3
 info title
 info underline
 info "Model" model
-info "Chip" chip
+info "Asic" asic
 info "Clock" clock
 info "Firmware" firmware
 info "Uptime" uptime
@@ -28,12 +27,12 @@ prin circlejerking into open source
 """
 # Selected icon name or path
 # Default: 'family'
-# Values: 'vendor', 'family', 'none', or path to ascii art in a plaintext file
+# Values: 'asic', 'family', 'none', or path to ascii art in a plaintext file
 icon = 'family'
 # Spaces between the icon and the info
 icon_spacing = 3
 # Default: 'family'
-# Values: 'vendor', 'family', 'manual', or theme name
+# Values: 'family', 'manual', or theme name
 theme = 'family'
 bold_titles = true
 # Separator between subtitle and info
@@ -61,7 +60,7 @@ board_version = true
 family = true
 vendor = false
 
-[chip]
+[asic]
 count = true
 small_core_count = true
 

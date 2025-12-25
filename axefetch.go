@@ -114,9 +114,8 @@ func main() {
 			},
 		},
 		Action: func(_ context.Context, ctx *cli.Command) error {
-			if path := ctx.String("writedefaultconfig"); path != "" {
-				writeDefaultConfig(path)
-				return nil
+			if path := ctx.String("writedefaultconf"); path != "" {
+				return writeDefaultConfig(path)
 			}
 			if ctx.Bool("color") {
 				oigiki.NoColor = false
