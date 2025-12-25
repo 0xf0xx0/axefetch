@@ -1,7 +1,6 @@
 package main
 
 import (
-	"axefetch/types"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,6 +9,8 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+
+	"git.0xf0xx0.eth.limo/0xf0xx0/axefetch/types"
 
 	"github.com/pelletier/go-toml/v2"
 	"github.com/urfave/cli/v3"

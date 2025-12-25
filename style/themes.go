@@ -1,12 +1,11 @@
 package style
 
-import "axefetch/types"
+import "git.0xf0xx0.eth.limo/0xf0xx0/axefetch/types"
 
 // TODO
 // vendor color themes
 // model color themes
 // model family color themes
-// color settings
 var Themes = map[string]types.ColorTheme{
 	"gamma": {
 		Title:     "greenbright",

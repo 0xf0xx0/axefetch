@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"axefetch/style"
-	"axefetch/types"
+	"git.0xf0xx0.eth.limo/0xf0xx0/axefetch/style"
+	"git.0xf0xx0.eth.limo/0xf0xx0/axefetch/types"
 
-	"github.com/0xf0xx0/oigiki"
+	"git.0xf0xx0.eth.limo/0xf0xx0/oigiki"
 	"github.com/urfave/cli/v3"
 )
 
