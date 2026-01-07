@@ -16,6 +16,7 @@ var (
 	//go:embed embeds/models/gamma.txt
 	gamma string
 	// go:embed embeds/models/gammaturbo.txt
+	/// TODO
 	// gammaturbo string
 	// go:embed embeds/models/naja.txt
 	// naja string

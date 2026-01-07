@@ -21,11 +21,10 @@ W&8888W[C8%L]W8888&&   Firmware: ESP-Miner v2.8.0
 
 # install
 ```sh
-git clone https://github.com/0xf0xx0/axefetch.git
+git clone https://git.0xf0xx0.eth.limo/0xf0xx0/axefetch.git
 cd axefetch
 go build
-cp contrib/* ~/.config/axefetch/ # copy default icons
-./axefetch --ip <axeip>
+go install
 ```
 
 # TODO
@@ -36,7 +35,6 @@ cp contrib/* ~/.config/axefetch/ # copy default icons
     - same as info, but not dependent on pulls
 - [ ] add color themes
     - same as icons
-- [x] add docs to config
 
 bitcoin icon from https://bitcoinicons.com  
 gamma icon from https://svgsilh.com/image/309911.html
