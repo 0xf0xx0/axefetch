@@ -55,9 +55,6 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		/// this gets prepended
 		if conf.Asic.Count {
 			p := fmt.Sprintf("%dx", ai.AsicCount)
-			if conf.Asic.Smallcorecount {
-				p += fmt.Sprintf("%d", ai.SmallCoreCount)
-			}
 			ret = append(ret, p)
 		}
 		ret = append(ret, ai.AsicModel)
