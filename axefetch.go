@@ -9,6 +9,7 @@ import (
 
 	"git.0xf0xx0.eth.limo/0xf0xx0/axefetch/style"
 	"git.0xf0xx0.eth.limo/0xf0xx0/axefetch/types"
+	"golang.org/x/term"
 
 	"git.0xf0xx0.eth.limo/0xf0xx0/oigiki"
 	"github.com/urfave/cli/v3"
@@ -59,6 +60,7 @@ Version:
 `
 
 func main() {
+	oigiki.NoColor = !term.IsTerminal(int(os.Stdout.Fd()))
 	cli.RootCommandHelpTemplate = oigiki.ProcessTags(commandHelpTemplate)
 	app := &cli.Command{
 		Name:                   "axefetch",
@@ -320,6 +322,7 @@ func processFormat(format string, data types.ApiInfo) []string {
 	}
 	return res
 }
+
 // mimics info from neofetch
 func info(args []string, lastline string, data types.ApiInfo) string {
 	ret := ""
@@ -362,6 +365,7 @@ func info(args []string, lastline string, data types.ApiInfo) string {
 	}
 	return ret
 }
+
 // mimics prin from neofetch
 func prin(args []string, _ string, _ types.ApiInfo) string {
 	return oigiki.TagString(strings.Join(args, " "), conf.ColorTheme.Info)
