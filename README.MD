@@ -28,7 +28,7 @@ W&8888W[C8%L]W8888&&   Clock: 42.07 GHz@42069 mV
 go get git.0xf0xx0.eth.limo/0xf0xx0/axefetch@latest
 ```
 
-# build
+## manual build
 
 ```sh
 git clone https://git.0xf0xx0.eth.limo/0xf0xx0/axefetch.git

@@ -13,7 +13,7 @@ var DefaultConf = Config{
 			`info underline`,
 			`info "Model" model`,
 			`info "Asic" asic`,
-			`info "Clock" clock`,
+			// `info "Clock" power`,
 			`info "Firmware" firmware`,
 			`info "Uptime" uptime`,
 			`info "Best Difficulty" bestdiff`,
@@ -53,8 +53,8 @@ var DefaultConf = Config{
 		Vendor:       false,
 	},
 	Asic: Asic{
-		Count:          true,
-		Smallcorecount: true,
+		Count:     true,
+		Frequency: true,
 	},
 	Bestdiff: Bestdiff{
 		Ath:      true,
@@ -140,8 +140,8 @@ type Model struct {
 	Vendor       bool `toml:"vendor"`
 }
 type Asic struct {
-	Count          bool `toml:"count"`
-	Smallcorecount bool `toml:"small_core_count"`
+	Count     bool `toml:"count"`
+	Frequency bool `toml:"frequency"`
 }
 type Bestdiff struct {
 	Ath      bool   `toml:"ath"`

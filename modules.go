@@ -47,8 +47,10 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 	},
 
 	/// normal functions
-	"clock": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		return fmt.Sprintf("%s@%s", unitFormat(ai.Frequency, "mhz"), unitFormat(float64(ai.CoreVoltage), "mv"))
+	"power": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		/// TODO: voltage + wattage
+		// fmt.Sprintf("%s@%s", , unitFormat(float64(ai.CoreVoltage), "mv"))
+		return ""
 	},
 	"asic": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
@@ -58,6 +60,9 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			ret = append(ret, p)
 		}
 		ret = append(ret, ai.AsicModel)
+		if conf.Asic.Frequency {
+			ret = append(ret, fmt.Sprintf("@ %s", unitFormat(ai.Frequency, "mhz")))
+		}
 		return strings.Join(filterEmptyStringsOut(ret), " ")
 	},
 	"bestdiff": func(conf types.Config, ai types.ApiInfo, _ []string) string {

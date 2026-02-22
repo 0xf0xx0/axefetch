@@ -92,18 +92,18 @@ func reqAPI(endpoint, ip string, unmarshalInto any) error {
 	return nil
 }
 
-// converts 123456 into 123.45K and 123456789876 into 123.45 G
+// converts 123456 into 123K and 123456789876 into 123 G
 func floatToBinshort(value float64) string {
 	if value >= 1e12 {
-		return fmt.Sprintf("%.5gT", value/1e9) /// Trillions
+		return fmt.Sprintf("%.3gT", value/1e9) /// Trillions
 	} else if value >= 1e9 {
-		return fmt.Sprintf("%.5gG", value/1e9) /// Billions
+		return fmt.Sprintf("%.3gG", value/1e9) /// Billions
 	} else if value >= 1e6 {
-		return fmt.Sprintf("%.5gM", value/1e6) /// Millions
+		return fmt.Sprintf("%.3gM", value/1e6) /// Millions
 	} else if value >= 1e3 {
-		return fmt.Sprintf("%.5gK", value/1e3) /// Thousands
+		return fmt.Sprintf("%.3gK", value/1e3) /// Thousands
 	}
-	return fmt.Sprintf("%.5g", value) /// Less than a thousand
+	return fmt.Sprintf("%.3g", value) /// Less than a thousand
 }
 
 // units: gh/s, j/th, mhz, mv, c, ib, short
@@ -125,7 +125,7 @@ func unitFormat(value float64, unit string) string {
 		}
 	case "mhz":
 		{
-			unit = "mHz"
+			unit = "MHz"
 			if value > 1000 {
 				unit = "GHz"
 				value /= 1000
