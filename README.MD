@@ -3,21 +3,19 @@
 neofetch but for [\*axes](https://bitaxe.org)
 
 ```
-    <" .    . ^<   bitaxuh@bitaxe
-  [w@kI      Ik@q[   --------------
- X$$$$W+    ~M$$$$Y   Model: Gamma 621
-c$$$$$$%:``,%$$$$$$X   Asic: 1x BM1370
-W&8888W[C8%L]W8888&&   Clock: 42.07 GHz@42069 mV
-""""""" z**X """""""   Firmware: v4.2.0
-       'xXXn`          Uptime: 5d 13h 50m 24s
-      ,p$$$$d,         Best Difficulty: 330.73M session, 210M best
-     +W$$$$$$W_        Shares: 881B accepted, 423M rejected (0.05%)
-     /q*B$$B*qt        Pool: pogolo.local:5621
-                       Hashrate: 1.42 TH/s (actual), 1.42 TH/s (expected)
-                       Efficiency: 14.1 J/TH (actual), 14.1 J/TH (expected)
-                       Temperature: 55.33 C (asic), 66.00 C (vreg)
-                       Heap: 8 MiB
-                       circlejerking into open source
+    <" .    . ^< 󰋜 bitaxuh@bitaxe
+  [w@kI      Ik@q[ 󱤓 Gamma 621
+ X$$$$W+    ~M$$$$Y 󰘚 1x BM1370 @ 42.07 GHz
+c$$$$$$%:``,%$$$$$$X 󰊢 v4.2.0
+W&8888W[C8%L]W8888&& 󰥔 5d 13h 50m 24s
+""""""" z**X """"""" 󰓏 331M/210M
+       'xXXn`        󰔘 881B/423M (0.05%)
+      ,p$$$$d,       󰘆 pogolo.local:5621
+     +W$$$$$$W_      󰢷 1.42 TH/s, 1.42 TH/s
+     /q*B$$B*qt      󱐋 14.1 J/TH, 14.1 J/TH
+                     󰔏 55.33 C, 66.00 C
+                     󰍛 8 MiB
+                     circlejerking into open source
 ```
 
 # install
