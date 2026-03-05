@@ -34,16 +34,16 @@ var testData = types.ApiInfo{
 	FallbackStratumUser:    "bc1qfakefallbackaddress",
 	IsUsingFallbackStratum: 0,
 	Hostname:               "bitaxe",
-	Version:                "v4.2.0",
-	UptimeSeconds:          481824,
+	Version:                "v4.2.0-96-gdeadbeef",
+	UptimeSeconds:          481824656,
 	SharesAccepted:         881_435_387_204,
 	SharesRejected:         423_482_465,
-	Hashrate:               1420,
-	ExpectedHashrate:       1420,
+	Hashrate:               4204,
+	ExpectedHashrate:       4206,
 	Power:                  20,
 	FreeHeap:               8 * 1024 * 1024,
 	Temp:                   55.329478,
-	VrTemp:                 66,
+	VrTemp:                 69,
 }
 
 const commandHelpTemplate = `Name:
