@@ -62,7 +62,7 @@ func copyConf(dest, src *types.Config) {
 	dest.ColorTheme = src.ColorTheme
 	dest.Display = src.Display
 	dest.Efficiency = src.Efficiency
-	dest.Firmware = src.Firmware
+	// dest.Firmware = src.Firmware
 	dest.General = src.General
 	dest.Hashrate = src.Hashrate
 	dest.Model = src.Model

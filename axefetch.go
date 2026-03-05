@@ -23,7 +23,7 @@ var testData = types.ApiInfo{
 	BestSessionDiff:        330_730_700,
 	BoardFamily:            "Gamma",
 	BoardVersion:           "621",
-	BoardVendor:            "Fluffy Inc.",
+	// BoardVendor:            "Fluffy Inc.",
 	StratumURL:             "pogolo.local",
 	StratumPort:            5621,
 	StratumUser:            "bc1qfakeaddress.bitaxuh",

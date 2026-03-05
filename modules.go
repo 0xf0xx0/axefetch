@@ -92,13 +92,6 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 		}
 		return strings.Join(filterEmptyStringsOut(ret), ", ")
 	},
-	"firmware": func(conf types.Config, ai types.ApiInfo, _ []string) string {
-		ret := []string{}
-		if conf.Firmware.Version {
-			ret = append(ret, ai.Version)
-		}
-		return strings.Join(filterEmptyStringsOut(ret), " ")
-	},
 	"hashrate": func(conf types.Config, ai types.ApiInfo, _ []string) string {
 		ret := []string{}
 		/// TODO: add "tiny" display
@@ -190,5 +183,8 @@ var Modules = map[string]func(types.Config, types.ApiInfo, []string) string{
 			"%s", strconv.Itoa(int(time.Seconds())%60),
 		)
 		return replacer.Replace(ret)
+	},
+	"version": func(conf types.Config, ai types.ApiInfo, _ []string) string {
+		return ai.Version
 	},
 }

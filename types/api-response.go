@@ -7,7 +7,7 @@ type ApiInfo struct {
 	BestSessionDiff        float64 `json:"bestSessionDiff"`
 	BoardFamily            string  `json:"deviceModel"`
 	BoardVersion           string  `json:"boardVersion"`
-	BoardVendor            string  `json:"boardVendor"`
+	// BoardVendor            string  `json:"boardVendor"`
 	CoreVoltage            float64 `json:"coreVoltage"`
 	CoreVoltageActual      uint16  `json:"coreVoltageActual"`
 	Current                float64 `json:"current"`
@@ -20,7 +20,6 @@ type ApiInfo struct {
 	Frequency              float64 `json:"frequency"`
 	Hashrate               float64 `json:"hashrate"`
 	Hostname               string  `json:"hostname"`
-	IdfVersion             string  `json:"idfVersion"`
 	IsUsingFallbackStratum uint8   `json:"isUsingFallbackStratum"`
 	MaxPower               uint8   `json:"maxPower"`
 	NominalVoltage         uint    `json:"nominalVoltage"`

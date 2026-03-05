@@ -14,7 +14,7 @@ var DefaultConf = Config{
 			`info "Model" model`,
 			`info "Asic" asic`,
 			// `info "Clock" power`,
-			`info "Firmware" firmware`,
+			`info "Version" version`,
 			`info "Uptime" uptime`,
 			`info "Best Difficulty" bestdiff`,
 			`info "Shares" shares`,
@@ -66,9 +66,7 @@ var DefaultConf = Config{
 		Actual:   true,
 		Shortpaw: "off",
 	},
-	Firmware: Firmware{
-		Version: true,
-	},
+	// Firmware: Firmware{},
 	Hashrate: Hashrate{
 		Expected: true,
 		Actual:   true,
@@ -102,7 +100,6 @@ type Config struct {
 	Asic       `toml:"asic"`
 	Bestdiff   `toml:"bestdiff"`
 	Efficiency `toml:"efficiency"`
-	Firmware   `toml:"firmware"`
 	Hashrate   `toml:"hashrate"`
 	Pool       `toml:"pool"`
 	Shares     `toml:"shares"`
@@ -153,9 +150,6 @@ type Efficiency struct {
 	Actual   bool   `toml:"actual"`
 	Shortpaw string `toml:"shortpaw" comment:"'on' or 'off'"`
 }
-type Firmware struct {
-	Version bool `toml:"version"`
-}
 type Hashrate struct {
 	Expected bool   `toml:"expected"`
 	Actual   bool   `toml:"actual"`
@@ -176,3 +170,7 @@ type Temp struct {
 type Uptime struct {
 	Format string `toml:"format"`
 }
+
+//	type Firmware struct {
+//		Version bool `toml:"version"`
+//	}
